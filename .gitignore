@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+salida_clasificacion.csv
+salida_simple3.csv
+*.tmp
+.DS_Store
+
+# salidas generadas por el motor
+data/atlas_bodies_imported.csv
+solicitudes_observacion.md

@@ -1,0 +1,17 @@
+sistema,ra_horas,dec_grados,dist_ly,fam_mejor,codigo_mejor,indice_anfitrion,fuente
+Sol,0,0,0,A,A9,7.79,origen
+Proxima Centauri,14.483,-62.67,4.25,X,X3,3.00,Wikipedia:List_of_nearest_stars
+Barnard's Star,17.95,4.68,5.96,X,X3,3.00,Wikipedia:List_of_nearest_stars
+Ross 128,11.783,0.80,11.01,A,A4,4.00,Wikipedia:List_of_nearest_stars
+Epsilon Eridani,3.533,-9.45,10.47,G,G4,3.67,Wikipedia:List_of_nearest_stars
+Tau Ceti,1.733,-15.93,11.91,A,A4,4.00,Wikipedia:List_of_nearest_stars
+Epsilon Indi A,22.05,-56.78,11.87,G,G3,2.67,Wikipedia:List_of_nearest_stars
+Teegarden's Star,2.883,16.87,12.50,A,A4,4.20,Wikipedia:List_of_nearest_stars
+Wolf 1061,16.50,-12.65,14.05,X,X4,3.67,Wikipedia:List_of_nearest_stars
+HD 20794,3.317,-43.07,19.70,X,X4,4.00,Wikipedia:List_of_nearest_stars
+Gliese 581,15.324,-7.72,20.50,X,X3,3.33,Wikipedia+UniverseGuide
+Gliese 667C,17.316,-34.997,23.63,X,X4,3.91,Wikipedia:Gliese_667
+GJ 357,9.601,-21.66,31.00,V,V4,3.93,NASA_Exoplanet_Archive
+TRAPPIST-1,23.108,-5.04,40.66,X,X4,5.08,Wikipedia:TRAPPIST-1
+55 Cancri,8.877,28.33,41.00,V,V4,4.36,Wikipedia:55_Cancri
+LHS 1140,0.750,-15.27,48.80,O,O5,4.67,Wikipedia:LHS_1140

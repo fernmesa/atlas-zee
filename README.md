@@ -32,22 +32,36 @@ La idea central: **si mañana alguien decide que hay que clasificar en 3 clases,
 o con índices distintos a E/C/R, no reescribe el motor — escribe una capa nueva.** El
 núcleo no cambia. Cada persona ejecuta con las capas que quiera, o con todas.
 
-### Las tres clases de capa (contratos)
+### Las cuatro clases de capa (contratos)
 
 | Capa | Pregunta que responde | Contrato de función |
 |------|----------------------|---------------------|
 | `index_provider` | ¿Qué índices numéricos tiene el cuerpo? | `(body, ctx) -> (indices, origen)` |
 | `scheme` | ¿A qué clase/código pertenece? | `(body, indices, ctx) -> {clase, codigo, centralidad, ...}` |
 | `gate` | ¿Tiene datos suficientes para el catálogo oficial? | `(body, ctx) -> (admitido, motivos)` |
+| `annotator` | Enriquece el resultado sin cambiar la clase | `(body, clase, indices, ctx) -> dict` |
 
 Cada capa se auto-registra con un decorador (`@index_provider("ecr")`, etc.) y se activa
 por nombre en la config. Añadir una capa = crear un archivo en `layers/`. **No se toca el núcleo.**
 
 ---
 
-## Uso rápido
+## Clonar y ejecutar
 
-Sin dependencias externas. Solo Python 3.8+.
+Sin dependencias externas. Solo Python 3.8+ y git.
+
+```bash
+# con GitHub CLI
+gh repo clone fernmesa/atlas-zee
+# o con git normal
+git clone https://github.com/fernmesa/atlas-zee.git
+
+cd atlas-zee
+python tests/test_controls.py         # debe decir: los 8 controles pasan
+python run.py                         # clasifica los 90 cuerpos curados
+```
+
+## Uso rápido
 
 ```bash
 python run.py                         # clasifica con la config por defecto (ZEE-7)
@@ -79,6 +93,23 @@ Titan                      M5     5.33      sí   E5 C5 R6
   que el mismo núcleo y los mismos índices dan otra taxonomía solo cambiando esta capa.
 - **`gate_min_data`** — Exige datos mínimos y contraste de fuentes. No borra nada: marca
   cada cuerpo como `admitido` (catálogo verificado) o no (sandbox), con el motivo.
+- **`hypothesis_biochem`** *(anotador)* — Por cada familia, aventura qué bioquímica sería
+  compatible (disolvente, esqueleto, metabolismo, análogo terrestre), con etiqueta explícita
+  de si es real, plausible o especulativo. No cambia la clasificación.
+- **`observability`** *(anotador)* — Calcula el **valor de la información**: qué datos faltan,
+  cuánto subiría la clasificación si fueran favorables, y con qué plausibilidad. Alimenta el
+  generador de solicitudes de observación.
+
+## Herramientas (`tools/`)
+
+```bash
+python tools/import_nasa.py --limit 200        # importa exoplanetas reales del NASA Archive
+python tools/observation_requests.py --top 10  # prioriza objetivos para pedir telescopio
+```
+
+El importador trae lo medible (masa, radio, insolación) y deja atmósfera/agua en blanco:
+los mundos sin datos caen honestamente en **X** con confianza BAJA, y el generador de
+solicitudes los señala como candidatos donde una espectroscopía cambiaría más la clasificación.
 
 ## Configuración (`config/default.json`)
 
@@ -125,13 +156,34 @@ atlas/
 │   └── pipeline.py    # orquestación
 ├── layers/            # ← aquí vive toda la ciencia, y aquí se contribuye
 │   ├── indices_ecr.py
-│   ├── scheme_zee7.py
-│   ├── scheme_simple3.py
-│   └── gate_min_data.py
-├── data/atlas_bodies.csv   # fuente única de verdad (90 cuerpos curados)
+│   ├── scheme_zee7.py · scheme_simple3.py
+│   ├── gate_min_data.py
+│   ├── hypothesis_biochem.py     # anotador: hipótesis de vida por familia
+│   └── observability.py          # anotador: prioridad de observación (VOI)
+├── tools/             # importador NASA + generador de solicitudes
+├── data/
+│   ├── atlas_bodies.csv    # fuente única de verdad (90 cuerpos curados)
+│   └── host_stars.csv      # 15 estrellas con coordenadas verificadas
+├── docs/index.html    # visor web (mapas E-C, orbital, vecindario, galáctico)
 ├── config/default.json
 ├── run.py
 └── tests/test_controls.py  # contrato de calibración (8 controles)
+```
+
+## Desplegar el visor web
+
+`docs/index.html` es una página estática autocontenida (sin dependencias). Opciones:
+
+- **Cloudflare Pages** *(recomendado, ya usas Cloudflare)* — conecta el repo, sin build,
+  directorio de salida `docs/`. Funciona con repos privados en el plan gratuito.
+- **GitHub Pages** — gratis, pero con repo privado requiere plan de pago; con repo público
+  es un clic (Settings → Pages → carpeta `/docs`).
+- **Netlify / Vercel** — también sirven estáticos desde `docs/` sin configuración.
+
+Para servirlo en local:
+
+```bash
+python -m http.server -d docs 8000    # abre http://localhost:8000
 ```
 
 ## Estado y hoja de ruta

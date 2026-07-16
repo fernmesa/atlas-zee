@@ -1,0 +1,330 @@
+<meta charset="utf-8">
+<title>ATLAS · Atlas visual de Zonas de Estabilidad Ecosistémica</title>
+<style>
+:root{
+  --ground:#f4f6fa; --panel:#ffffff; --ink:#141922; --muted:#5c6675; --hair:#dde3ec;
+  --accent:#c9873f; --grid:#e7ecf3; --shadow:0 1px 3px rgba(20,30,50,.08),0 8px 24px rgba(20,30,50,.06);
+  --fA:#2f95c9; --fM:#d98a3a; --fO:#5a63c4; --fV:#d0503f; --fC:#84b3c6; --fG:#c9a24b; --fX:#8a93a2;
+}
+@media (prefers-color-scheme:dark){:root{
+  --ground:#0b0e15; --panel:#141924; --ink:#e7ecf5; --muted:#8b95a6; --hair:#242c3a;
+  --accent:#e0a860; --grid:#1d2431; --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  --fA:#49b0e2; --fM:#eaa156; --fO:#7d86e0; --fV:#e56b58; --fC:#9ccadd; --fG:#e0bb64; --fX:#9aa3b3;
+}}
+:root[data-theme="light"]{--ground:#f4f6fa;--panel:#fff;--ink:#141922;--muted:#5c6675;--hair:#dde3ec;--accent:#c9873f;--grid:#e7ecf3;--shadow:0 1px 3px rgba(20,30,50,.08),0 8px 24px rgba(20,30,50,.06);--fA:#2f95c9;--fM:#d98a3a;--fO:#5a63c4;--fV:#d0503f;--fC:#84b3c6;--fG:#c9a24b;--fX:#8a93a2;}
+:root[data-theme="dark"]{--ground:#0b0e15;--panel:#141924;--ink:#e7ecf5;--muted:#8b95a6;--hair:#242c3a;--accent:#e0a860;--grid:#1d2431;--shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);--fA:#49b0e2;--fM:#eaa156;--fO:#7d86e0;--fV:#e56b58;--fC:#9ccadd;--fG:#e0bb64;--fX:#9aa3b3;}
+*{box-sizing:border-box}
+body,.wrap{margin:0}
+.wrap{background:var(--ground);color:var(--ink);
+  font-family:"Segoe UI",-apple-system,system-ui,Roboto,Helvetica,Arial,sans-serif;
+  padding:28px 20px 60px;min-height:100vh;font-size:15px;line-height:1.55}
+.inner{max-width:1080px;margin:0 auto}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:600}
+h1{font-size:clamp(24px,4vw,38px);margin:.25em 0 .1em;letter-spacing:-.02em;text-wrap:balance;font-weight:700}
+.sub{color:var(--muted);max-width:60ch;margin:0 0 22px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.tab{border:1px solid var(--hair);background:var(--panel);color:var(--muted);padding:8px 15px;
+  border-radius:999px;cursor:pointer;font-size:13.5px;font-weight:600;transition:.15s}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card{background:var(--panel);border:1px solid var(--hair);border-radius:16px;box-shadow:var(--shadow);
+  padding:18px 18px 8px;margin-bottom:18px}
+.card h2{font-size:16px;margin:0 0 2px}
+.card p.note{color:var(--muted);font-size:13px;margin:0 0 10px}
+.canvas-wrap{position:relative;width:100%}
+canvas{width:100%;display:block;border-radius:8px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:12px 2px 4px}
+.lg{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--muted);cursor:pointer;
+  user-select:none;padding:3px 4px;border-radius:6px}
+.lg.off{opacity:.32;text-decoration:line-through}
+.dot{width:11px;height:11px;border-radius:50%;flex:none}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--ground);
+  padding:7px 10px;border-radius:8px;font-size:12px;line-height:1.4;opacity:0;transition:opacity .1s;
+  transform:translate(-50%,-115%);white-space:nowrap;z-index:5;box-shadow:var(--shadow)}
+.tip b{font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:7px 9px;border-bottom:1px solid var(--hair)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:600;font-size:11px;letter-spacing:.04em;text-transform:uppercase}
+tr:hover td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
+.code{font-family:ui-monospace,"Cascadia Code",Consolas,monospace;font-weight:700}
+.hide{display:none}
+.foot{color:var(--muted);font-size:12px;margin-top:8px}
+.scroll{overflow-x:auto}
+.rankbar{height:10px;border-radius:5px;display:inline-block;vertical-align:middle}
+</style>
+
+<div class="wrap"><div class="inner">
+  <div class="eyebrow">ATLAS v0.1 · 78 cuerpos · 38 sistemas</div>
+  <h1>Atlas visual de Zonas de Estabilidad Ecosistémica</h1>
+  <p class="sub">Cada mundo situado por su química (C), su energía (E) y su posición real alrededor de su estrella. Las estrellas se puntúan por las ZEE que hospedan — un índice para priorizar dónde mirar.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-view="ecr">Espacio E · C</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="dist">Posición real (log)</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="stars">Estrellas anfitrionas</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="map">Mapa del vecindario</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="gal">Mapa galáctico</button>
+  </div>
+
+  <div id="view-ecr" class="card">
+    <h2>Química vs. Energía — el mapa ZEE</h2>
+    <p class="note">Eje X = Energía (E) · Eje Y = Persistencia química (C) · tamaño del punto = Resistencia (R). La Tierra ocupa la esquina superior sola: el "centro de gravedad".</p>
+    <div class="canvas-wrap"><canvas id="c1"></canvas><div class="tip" id="t1"></div></div>
+    <div class="legend" id="leg1"></div>
+  </div>
+
+  <div id="view-dist" class="card hide">
+    <h2>Posición real alrededor de la estrella</h2>
+    <p class="note">Eje X = distancia orbital en AU (escala logarítmica) · Eje Y = CCE. Muestra cómo las lunas heladas (muy cerca de su planeta) y los exoplanetas en zona habitable ocupan regímenes distintos.</p>
+    <div class="canvas-wrap"><canvas id="c2"></canvas><div class="tip" id="t2"></div></div>
+    <div class="legend" id="leg2"></div>
+  </div>
+
+  <div id="view-map" class="card hide">
+    <h2>Vecindario solar — estrellas por familia dominante</h2>
+    <p class="note">Vista superior (proyección en el plano) centrada en el Sol · anillos = 10/20/30/40 años luz · color = familia del mejor cuerpo del sistema · tamaño = Índice Anfitrión. Solo 15 sistemas con coordenadas verificadas. Haz clic en la leyenda para resaltar una familia.</p>
+    <div class="canvas-wrap"><canvas id="c3"></canvas><div class="tip" id="t3"></div></div>
+    <div class="legend" id="leg3"></div>
+    <p class="foot">Coordenadas reales (Wikipedia/NASA Exoplanet Archive), proyectadas desde ascensión recta/declinación/distancia. El eje Z (fuera del plano) se codifica con el brillo del punto. Las familias <b>no</b> se agrupan en el espacio: el tipo ZEE depende del planeta, no de dónde esté la estrella.</p>
+  </div>
+
+  <div id="view-gal" class="card hide">
+    <h2>Marco galactocéntrico — el Sol no está en el centro</h2>
+    <p class="note">La galaxia vista de cara: el centro (Sgr A*) en el origen, el Sol a ~26.670 años luz en el disco. A esta escala <b>todo nuestro vecindario es un punto</b>; por eso se amplía en el círculo (zoom ~×250), orientado con la flecha hacia el centro galáctico. Prueba de que el modelo no es heliocéntrico: cada estrella tiene una distancia real al centro galáctico (pasa el ratón).</p>
+    <div class="canvas-wrap"><canvas id="c4"></canvas><div class="tip" id="t4"></div></div>
+    <div class="legend" id="leg4"></div>
+    <p class="foot">Conversión ecuatorial→galáctica con la matriz estándar J2000; R₀(Sol–centro)=26.670 ly. Las posiciones galactocéntricas varían solo ±decenas de ly entre nuestras estrellas: a escala galáctica somos indistinguibles del Sol.</p>
+  </div>
+
+  <div id="view-stars" class="card hide">
+    <h2>Ranking de estrellas por Índice Anfitrión</h2>
+    <p class="note">Índice = 0.6·CCE_max + 0.4·CCE_medio + bonus por diversidad de familias. Cuanto más alto, más rico el sistema en zonas de estabilidad.</p>
+    <div class="scroll"><table id="startab"><thead><tr>
+      <th>Sistema</th><th>Índice</th><th></th><th>CCE máx</th><th>CCE med</th><th>N·ZEE</th><th>Familias</th><th>Mejor cuerpo</th>
+    </tr></thead><tbody></tbody></table></div>
+    <p class="foot">N·ZEE = cuerpos con CCE ≥ 5.5 (dentro de zona). Los sistemas Solar/Júpiter/Saturno agrupan sus lunas.</p>
+  </div>
+</div></div>
+
+<script>
+const DATA = {"bodies": [{"nombre": "Mercurio", "sistema": "Solar", "tipo": "Planeta", "familia": "V", "E": 7, "C": 2, "R": 2, "CCE": 3.67, "codigo": "V4", "confianza": "MEDIA", "dist_AU": 0.39, "insol": 9100.0, "disp": "Mercurio"}, {"nombre": "Venus", "sistema": "Solar", "tipo": "Planeta", "familia": "G", "E": 8, "C": 2, "R": 3, "CCE": 4.33, "codigo": "G4", "confianza": "MEDIA", "dist_AU": 0.72, "insol": 2600.0, "disp": "Venus"}, {"nombre": "Tierra", "sistema": "Solar", "tipo": "Planeta", "familia": "A", "E": 9, "C": 9, "R": 8, "CCE": 8.67, "codigo": "A9", "confianza": "ALTA", "dist_AU": 1.0, "insol": 1360.0, "disp": "Tierra"}, {"nombre": "Marte", "sistema": "Solar", "tipo": "Planeta", "familia": "C", "E": 5, "C": 3, "R": 4, "CCE": 4.0, "codigo": "C4", "confianza": "MEDIA", "dist_AU": 1.52, "insol": 590.0, "disp": "Marte"}, {"nombre": "Jupiter", "sistema": "Solar", "tipo": "Planeta", "familia": "G", "E": 7, "C": 4, "R": 8, "CCE": 6.33, "codigo": "G6", "confianza": "ALTA", "dist_AU": 5.2, "insol": 50.0, "disp": "Jupiter"}, {"nombre": "Saturno", "sistema": "Solar", "tipo": "Planeta", "familia": "G", "E": 5, "C": 3, "R": 8, "CCE": 5.33, "codigo": "G5", "confianza": "ALTA", "dist_AU": 9.5, "insol": 15.0, "disp": "Saturno"}, {"nombre": "Urano", "sistema": "Solar", "tipo": "Planeta", "familia": "G", "E": 3, "C": 2, "R": 5, "CCE": 3.33, "codigo": "G3", "confianza": "ALTA", "dist_AU": 19.2, "insol": 3.7, "disp": "Urano"}, {"nombre": "Neptuno", "sistema": "Solar", "tipo": "Planeta", "familia": "G", "E": 4, "C": 2, "R": 5, "CCE": 3.67, "codigo": "G4", "confianza": "ALTA", "dist_AU": 30.1, "insol": 1.5, "disp": "Neptuno"}, {"nombre": "Luna", "sistema": "Tierra", "tipo": "Satelite", "familia": "C", "E": 2, "C": 1, "R": 3, "CCE": 2.0, "codigo": "C2", "confianza": "ALTA", "dist_AU": 0.0026, "insol": 130.0, "disp": "Luna"}, {"nombre": "Fobos", "sistema": "Marte", "tipo": "Satelite", "familia": "X", "E": 1, "C": 0, "R": 2, "CCE": 1.0, "codigo": "X1", "confianza": "ALTA", "dist_AU": 0.00016, "insol": 80.0, "disp": "Fobos"}, {"nombre": "Deimos", "sistema": "Marte", "tipo": "Satelite", "familia": "X", "E": 1, "C": 0, "R": 1, "CCE": 0.67, "codigo": "X1", "confianza": "ALTA", "dist_AU": 0.00048, "insol": 80.0, "disp": "Deimos"}, {"nombre": "Io", "sistema": "Jupiter", "tipo": "Satelite", "familia": "V", "E": 6, "C": 5, "R": 4, "CCE": 5.0, "codigo": "V5", "confianza": "MEDIA", "dist_AU": 0.00282, "insol": 130.0, "disp": "Io"}, {"nombre": "Europa", "sistema": "Jupiter", "tipo": "Satelite", "familia": "O", "E": 7, "C": 7, "R": 6, "CCE": 6.67, "codigo": "O7", "confianza": "MEDIA", "dist_AU": 0.00428, "insol": 50.0, "disp": "Europa"}, {"nombre": "Ganimedes", "sistema": "Jupiter", "tipo": "Satelite", "familia": "O", "E": 6, "C": 6, "R": 6, "CCE": 6.0, "codigo": "O6", "confianza": "MEDIA", "dist_AU": 0.00715, "insol": 15.0, "disp": "Ganimedes"}, {"nombre": "Calisto", "sistema": "Jupiter", "tipo": "Satelite", "familia": "C", "E": 4, "C": 4, "R": 5, "CCE": 4.33, "codigo": "C4", "confianza": "MEDIA", "dist_AU": 0.01259, "insol": 5.0, "disp": "Calisto"}, {"nombre": "Titan", "sistema": "Saturno", "tipo": "Satelite", "familia": "M", "E": 5, "C": 5, "R": 6, "CCE": 5.33, "codigo": "M5", "confianza": "MEDIA", "dist_AU": 0.01519, "insol": 5.0, "disp": "Titan"}, {"nombre": "Encélado", "sistema": "Saturno", "tipo": "Satelite", "familia": "O", "E": 6, "C": 6, "R": 6, "CCE": 6.0, "codigo": "O6", "confianza": "MEDIA", "dist_AU": 0.00238, "insol": 0.3, "disp": "Encélado"}, {"nombre": "Mimas", "sistema": "Saturno", "tipo": "Satelite", "familia": "C", "E": 1, "C": 1, "R": 4, "CCE": 2.0, "codigo": "C2", "confianza": "MEDIA", "dist_AU": 0.001864, "insol": 1.0, "disp": "Mimas"}, {"nombre": "Tetis", "sistema": "Saturno", "tipo": "Satelite", "familia": "C", "E": 1, "C": 1, "R": 4, "CCE": 2.0, "codigo": "C2", "confianza": "MEDIA", "dist_AU": 0.002948, "insol": 2.0, "disp": "Tetis"}, {"nombre": "Dione", "sistema": "Saturno", "tipo": "Satelite", "familia": "C", "E": 2, "C": 2, "R": 4, "CCE": 2.67, "codigo": "C3", "confianza": "MEDIA", "dist_AU": 0.003674, "insol": 2.0, "disp": "Dione"}, {"nombre": "Rea", "sistema": "Saturno", "tipo": "Satelite", "familia": "C", "E": 3, "C": 3, "R": 4, "CCE": 3.33, "codigo": "C3", "confianza": "MEDIA", "dist_AU": 0.005518, "insol": 2.0, "disp": "Rea"}, {"nombre": "Iapeto", "sistema": "Saturno", "tipo": "Satelite", "familia": "C", "E": 2, "C": 2, "R": 4, "CCE": 2.67, "codigo": "C3", "confianza": "BAJA", "dist_AU": 0.008888, "insol": 1.0, "disp": "Iapeto"}, {"nombre": "Triton", "sistema": "Neptuno", "tipo": "Satelite", "familia": "V", "E": 4, "C": 4, "R": 3, "CCE": 3.67, "codigo": "V4", "confianza": "MEDIA", "dist_AU": 0.000235, "insol": 0.3, "disp": "Triton"}, {"nombre": "Proteo", "sistema": "Neptuno", "tipo": "Satelite", "familia": "C", "E": 1, "C": 1, "R": 2, "CCE": 1.33, "codigo": "C1", "confianza": "BAJA", "dist_AU": 0.000295, "insol": 0.3, "disp": "Proteo"}, {"nombre": "Queron", "sistema": "Solar", "tipo": "Planetoide", "familia": "C", "E": 1, "C": 2, "R": 3, "CCE": 2.0, "codigo": "C2", "confianza": "BAJA", "dist_AU": 39.5, "insol": 0.05, "disp": "Queron"}, {"nombre": "Pluton", "sistema": "Solar", "tipo": "Planetoide", "familia": "C", "E": 3, "C": 3, "R": 3, "CCE": 3.0, "codigo": "C3", "confianza": "MEDIA", "dist_AU": 39.5, "insol": 0.05, "disp": "Pluton"}, {"nombre": "Eris", "sistema": "Solar", "tipo": "Planetoide", "familia": "C", "E": 1, "C": 2, "R": 3, "CCE": 2.0, "codigo": "C2", "confianza": "BAJA", "dist_AU": 96.0, "insol": 0.01, "disp": "Eris"}, {"nombre": "Proxima_Centauri_b", "sistema": "Proxima Centauri", "tipo": "Exoplaneta", "familia": "X", "E": 4, "C": 3, "R": 2, "CCE": 3.0, "codigo": "X3", "confianza": "BAJA", "dist_AU": 0.0485, "insol": 64.0, "disp": "Proxima Centauri b"}, {"nombre": "TRAPPIST_1b", "sistema": "TRAPPIST-1", "tipo": "Exoplaneta", "familia": "V", "E": 8, "C": 2, "R": 2, "CCE": 4.0, "codigo": "V4", "confianza": "BAJA", "dist_AU": 0.01154, "insol": 3000.0, "disp": "TRAPPIST 1b"}, {"nombre": "TRAPPIST_1c", "sistema": "TRAPPIST-1", "tipo": "Exoplaneta", "familia": "G", "E": 8, "C": 2, "R": 2, "CCE": 4.0, "codigo": "G4", "confianza": "BAJA", "dist_AU": 0.01529, "insol": 2300.0, "disp": "TRAPPIST 1c"}, {"nombre": "TRAPPIST_1d", "sistema": "TRAPPIST-1", "tipo": "Exoplaneta", "familia": "X", "E": 7, "C": 3, "R": 3, "CCE": 4.33, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.02127, "insol": 960.0, "disp": "TRAPPIST 1d"}, {"nombre": "TRAPPIST_1e", "sistema": "TRAPPIST-1", "tipo": "Exoplaneta", "familia": "O", "E": 5, "C": 4, "R": 3, "CCE": 4.0, "codigo": "O4", "confianza": "BAJA", "dist_AU": 0.02925, "insol": 630.0, "disp": "TRAPPIST 1e"}, {"nombre": "TRAPPIST_1f", "sistema": "TRAPPIST-1", "tipo": "Exoplaneta", "familia": "O", "E": 5, "C": 4, "R": 3, "CCE": 4.0, "codigo": "O4", "confianza": "BAJA", "dist_AU": 0.03853, "insol": 380.0, "disp": "TRAPPIST 1f"}, {"nombre": "TRAPPIST_1g", "sistema": "TRAPPIST-1", "tipo": "Exoplaneta", "familia": "O", "E": 5, "C": 4, "R": 3, "CCE": 4.0, "codigo": "O4", "confianza": "BAJA", "dist_AU": 0.05227, "insol": 210.0, "disp": "TRAPPIST 1g"}, {"nombre": "TRAPPIST_1h", "sistema": "TRAPPIST-1", "tipo": "Exoplaneta", "familia": "C", "E": 4, "C": 3, "R": 3, "CCE": 3.33, "codigo": "C3", "confianza": "BAJA", "dist_AU": 0.0648, "insol": 130.0, "disp": "TRAPPIST 1h"}, {"nombre": "Kepler_186f", "sistema": "Kepler-186", "tipo": "Exoplaneta", "familia": "A", "E": 5, "C": 4, "R": 4, "CCE": 4.33, "codigo": "A4", "confianza": "BAJA", "dist_AU": 0.432, "insol": 0.32, "disp": "Kepler 186f"}, {"nombre": "Kepler_452b", "sistema": "Kepler-452", "tipo": "Exoplaneta", "familia": "A", "E": 7, "C": 5, "R": 5, "CCE": 5.67, "codigo": "A6", "confianza": "MEDIA", "dist_AU": 1.05, "insol": 0.98, "disp": "Kepler 452b"}, {"nombre": "K2_18b", "sistema": "K2-18", "tipo": "Exoplaneta", "familia": "G", "E": 6, "C": 4, "R": 3, "CCE": 4.33, "codigo": "G4", "confianza": "MEDIA", "dist_AU": 0.1494, "insol": 130.0, "disp": "K2 18b"}, {"nombre": "Gliese_667Cc", "sistema": "Gliese 667C", "tipo": "Exoplaneta", "familia": "X", "E": 5, "C": 3, "R": 3, "CCE": 3.67, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.125, "insol": 2.0, "disp": "Gliese 667Cc"}, {"nombre": "Gliese_581g", "sistema": "Gliese 581", "tipo": "Exoplaneta", "familia": "X", "E": 5, "C": 3, "R": 2, "CCE": 3.33, "codigo": "X3", "confianza": "BAJA", "dist_AU": 0.146, "insol": 3.0, "disp": "Gliese 581g"}, {"nombre": "Wolf_1061c", "sistema": "Wolf 1061", "tipo": "Exoplaneta", "familia": "X", "E": 5, "C": 3, "R": 3, "CCE": 3.67, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.167, "insol": 3.0, "disp": "Wolf 1061c"}, {"nombre": "Tau_Ceti_e", "sistema": "Tau Ceti", "tipo": "Exoplaneta", "familia": "A", "E": 5, "C": 3, "R": 4, "CCE": 4.0, "codigo": "A4", "confianza": "BAJA", "dist_AU": 0.538, "insol": 3.0, "disp": "Tau Ceti e"}, {"nombre": "Tau_Ceti_f", "sistema": "Tau Ceti", "tipo": "Exoplaneta", "familia": "A", "E": 5, "C": 3, "R": 4, "CCE": 4.0, "codigo": "A4", "confianza": "BAJA", "dist_AU": 0.74, "insol": 1.5, "disp": "Tau Ceti f"}, {"nombre": "Epsilon_Eridani_b", "sistema": "Epsilon Eridani", "tipo": "Exoplaneta", "familia": "G", "E": 5, "C": 3, "R": 3, "CCE": 3.67, "codigo": "G4", "confianza": "BAJA", "dist_AU": 3.39, "insol": 0.1, "disp": "Epsilon Eridani b"}, {"nombre": "Barnard_Star_c", "sistema": "Barnard's Star", "tipo": "Exoplaneta", "familia": "X", "E": 4, "C": 2, "R": 3, "CCE": 3.0, "codigo": "X3", "confianza": "BAJA", "dist_AU": 0.4, "insol": 1.5, "disp": "Barnard Star c"}, {"nombre": "HD_40307g", "sistema": "HD 40307", "tipo": "Exoplaneta", "familia": "X", "E": 5, "C": 3, "R": 4, "CCE": 4.0, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.734, "insol": 0.85, "disp": "HD 40307g"}, {"nombre": "Gliese_667Cb", "sistema": "Gliese 667C", "tipo": "Exoplaneta", "familia": "X", "E": 7, "C": 2, "R": 3, "CCE": 4.0, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.184, "insol": 7.0, "disp": "Gliese 667Cb"}, {"nombre": "Gliese_667Ce", "sistema": "Gliese 667C", "tipo": "Exoplaneta", "familia": "X", "E": 5, "C": 3, "R": 3, "CCE": 3.67, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.258, "insol": 3.5, "disp": "Gliese 667Ce"}, {"nombre": "LHS_1140b", "sistema": "LHS 1140", "tipo": "Exoplaneta", "familia": "O", "E": 6, "C": 4, "R": 4, "CCE": 4.67, "codigo": "O5", "confianza": "MEDIA", "dist_AU": 0.163, "insol": 5.0, "disp": "LHS 1140b"}, {"nombre": "TOI_700d", "sistema": "TOI-700", "tipo": "Exoplaneta", "familia": "A", "E": 5, "C": 4, "R": 4, "CCE": 4.33, "codigo": "A4", "confianza": "MEDIA", "dist_AU": 0.294, "insol": 3.0, "disp": "TOI 700d"}, {"nombre": "TOI_1693b", "sistema": "TOI-1693", "tipo": "Exoplaneta", "familia": "X", "E": 6, "C": 2, "R": 3, "CCE": 3.67, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.21, "insol": 6.0, "disp": "TOI 1693b"}, {"nombre": "Gliese_12b", "sistema": "Gliese 12", "tipo": "Exoplaneta", "familia": "X", "E": 7, "C": 3, "R": 3, "CCE": 4.33, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.0685, "insol": 50.0, "disp": "Gliese 12b"}, {"nombre": "HD_20794d", "sistema": "HD 20794", "tipo": "Exoplaneta", "familia": "X", "E": 5, "C": 3, "R": 4, "CCE": 4.0, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.395, "insol": 3.0, "disp": "HD 20794d"}, {"nombre": "55_Cancri_e", "sistema": "55 Cancri", "tipo": "Exoplaneta", "familia": "V", "E": 8, "C": 2, "R": 3, "CCE": 4.33, "codigo": "V4", "confianza": "MEDIA", "dist_AU": 0.01544, "insol": 3000.0, "disp": "55 Cancri e"}, {"nombre": "55_Cancri_b", "sistema": "55 Cancri", "tipo": "Exoplaneta", "familia": "G", "E": 8, "C": 2, "R": 3, "CCE": 4.33, "codigo": "G4", "confianza": "BAJA", "dist_AU": 0.115, "insol": 180.0, "disp": "55 Cancri b"}, {"nombre": "55_Cancri_c", "sistema": "55 Cancri", "tipo": "Exoplaneta", "familia": "G", "E": 6, "C": 2, "R": 3, "CCE": 3.67, "codigo": "G4", "confianza": "BAJA", "dist_AU": 0.24, "insol": 80.0, "disp": "55 Cancri c"}, {"nombre": "55_Cancri_d", "sistema": "55 Cancri", "tipo": "Exoplaneta", "familia": "G", "E": 5, "C": 3, "R": 4, "CCE": 4.0, "codigo": "G4", "confianza": "BAJA", "dist_AU": 0.767, "insol": 20.0, "disp": "55 Cancri d"}, {"nombre": "55_Cancri_f", "sistema": "55 Cancri", "tipo": "Exoplaneta", "familia": "X", "E": 1, "C": 2, "R": 3, "CCE": 2.0, "codigo": "X2", "confianza": "BAJA", "dist_AU": 5.767, "insol": 0.05, "disp": "55 Cancri f"}, {"nombre": "Kepler_22b", "sistema": "Kepler-22", "tipo": "Exoplaneta", "familia": "G", "E": 5, "C": 4, "R": 4, "CCE": 4.33, "codigo": "G4", "confianza": "BAJA", "dist_AU": 0.849, "insol": 1.1, "disp": "Kepler 22b"}, {"nombre": "HD_85512b", "sistema": "HD 85512", "tipo": "Exoplaneta", "familia": "X", "E": 6, "C": 3, "R": 3, "CCE": 4.0, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.26, "insol": 5.0, "disp": "HD 85512b"}, {"nombre": "Gliese_163c", "sistema": "Gliese 163", "tipo": "Exoplaneta", "familia": "X", "E": 5, "C": 3, "R": 3, "CCE": 3.67, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.325, "insol": 3.0, "disp": "Gliese 163c"}, {"nombre": "Kepler_62f", "sistema": "Kepler-62", "tipo": "Exoplaneta", "familia": "A", "E": 5, "C": 4, "R": 4, "CCE": 4.33, "codigo": "A4", "confianza": "BAJA", "dist_AU": 0.713, "insol": 0.41, "disp": "Kepler 62f"}, {"nombre": "Kepler_62e", "sistema": "Kepler-62", "tipo": "Exoplaneta", "familia": "A", "E": 6, "C": 4, "R": 5, "CCE": 5.0, "codigo": "A5", "confianza": "MEDIA", "dist_AU": 0.427, "insol": 1.02, "disp": "Kepler 62e"}, {"nombre": "Kepler_296f", "sistema": "Kepler-296", "tipo": "Exoplaneta", "familia": "G", "E": 5, "C": 3, "R": 4, "CCE": 4.0, "codigo": "G4", "confianza": "BAJA", "dist_AU": 0.405, "insol": 1.5, "disp": "Kepler 296f"}, {"nombre": "Kepler_442b", "sistema": "Kepler-442", "tipo": "Exoplaneta", "familia": "A", "E": 6, "C": 4, "R": 5, "CCE": 5.0, "codigo": "A5", "confianza": "MEDIA", "dist_AU": 0.409, "insol": 1.04, "disp": "Kepler 442b"}, {"nombre": "Kepler_1649c", "sistema": "Kepler-1649", "tipo": "Exoplaneta", "familia": "A", "E": 6, "C": 4, "R": 4, "CCE": 4.67, "codigo": "A5", "confianza": "MEDIA", "dist_AU": 0.387, "insol": 1.08, "disp": "Kepler 1649c"}, {"nombre": "HD_69830d", "sistema": "HD 69830", "tipo": "Exoplaneta", "familia": "G", "E": 6, "C": 2, "R": 4, "CCE": 4.0, "codigo": "G4", "confianza": "BAJA", "dist_AU": 0.385, "insol": 6.0, "disp": "HD 69830d"}, {"nombre": "HD_40307e", "sistema": "HD 40307", "tipo": "Exoplaneta", "familia": "X", "E": 3, "C": 2, "R": 4, "CCE": 3.0, "codigo": "X3", "confianza": "BAJA", "dist_AU": 1.21, "insol": 0.22, "disp": "HD 40307e"}, {"nombre": "HD_40307f", "sistema": "HD 40307", "tipo": "Exoplaneta", "familia": "X", "E": 2, "C": 2, "R": 4, "CCE": 2.67, "codigo": "X3", "confianza": "BAJA", "dist_AU": 1.6, "insol": 0.1, "disp": "HD 40307f"}, {"nombre": "Gliese_832c", "sistema": "Gliese 832", "tipo": "Exoplaneta", "familia": "X", "E": 5, "C": 3, "R": 3, "CCE": 3.67, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.1637, "insol": 3.0, "disp": "Gliese 832c"}, {"nombre": "Gliese_849b", "sistema": "Gliese 849", "tipo": "Exoplaneta", "familia": "G", "E": 3, "C": 2, "R": 4, "CCE": 3.0, "codigo": "G3", "confianza": "BAJA", "dist_AU": 1.53, "insol": 0.17, "disp": "Gliese 849b"}, {"nombre": "Ross_128b", "sistema": "Ross 128", "tipo": "Exoplaneta", "familia": "A", "E": 5, "C": 3, "R": 4, "CCE": 4.0, "codigo": "A4", "confianza": "MEDIA", "dist_AU": 0.0479, "insol": 1.38, "disp": "Ross 128b"}, {"nombre": "Teegarden_b", "sistema": "Teegarden's Star", "tipo": "Exoplaneta", "familia": "A", "E": 5, "C": 4, "R": 4, "CCE": 4.33, "codigo": "A4", "confianza": "MEDIA", "dist_AU": 0.0251, "insol": 0.88, "disp": "Teegarden b"}, {"nombre": "Teegarden_c", "sistema": "Teegarden's Star", "tipo": "Exoplaneta", "familia": "A", "E": 4, "C": 3, "R": 4, "CCE": 3.67, "codigo": "A4", "confianza": "BAJA", "dist_AU": 0.0402, "insol": 0.36, "disp": "Teegarden c"}, {"nombre": "GJ_357b", "sistema": "GJ 357", "tipo": "Exoplaneta", "familia": "V", "E": 7, "C": 2, "R": 3, "CCE": 4.0, "codigo": "V4", "confianza": "BAJA", "dist_AU": 0.1116, "insol": 8.0, "disp": "GJ 357b"}, {"nombre": "GJ_357d", "sistema": "GJ 357", "tipo": "Exoplaneta", "familia": "X", "E": 5, "C": 3, "R": 3, "CCE": 3.67, "codigo": "X4", "confianza": "BAJA", "dist_AU": 0.207, "insol": 1.9, "disp": "GJ 357d"}, {"nombre": "Epsilon_Indi_Ab", "sistema": "Epsilon Indi A", "tipo": "Exoplaneta", "familia": "G", "E": 2, "C": 2, "R": 4, "CCE": 2.67, "codigo": "G3", "confianza": "BAJA", "dist_AU": 11.0, "insol": 0.002, "disp": "Epsilon Indi Ab"}, {"nombre": "Barnard_Star_b", "sistema": "Barnard's Star", "tipo": "Exoplaneta", "familia": "X", "E": 4, "C": 2, "R": 3, "CCE": 3.0, "codigo": "X3", "confianza": "BAJA", "dist_AU": 0.4, "insol": 1.6, "disp": "Barnard Star b"}, {"nombre": "Marte_historico", "sistema": "Solar", "tipo": "Planeta_extintoHistorico", "familia": "A", "E": 7, "C": 6, "R": 5, "CCE": 6.0, "codigo": "A6", "confianza": "MEDIA", "dist_AU": 1.52, "insol": 590.0, "disp": "Marte historico"}, {"nombre": "Venus_historico", "sistema": "Solar", "tipo": "Planeta_extintoHistorico", "familia": "A", "E": 8, "C": 7, "R": 5, "CCE": 6.67, "codigo": "A7", "confianza": "MEDIA", "dist_AU": 0.72, "insol": 2600.0, "disp": "Venus historico"}, {"nombre": "Mercurio_historico", "sistema": "Solar", "tipo": "Planeta_extintoHistorico", "familia": "V", "E": 7, "C": 4, "R": 3, "CCE": 4.67, "codigo": "V5", "confianza": "BAJA", "dist_AU": 0.39, "insol": 9100.0, "disp": "Mercurio historico"}, {"nombre": "Ganímedes_futuro", "sistema": "Júpiter", "tipo": "Satelite_futuro", "familia": "O", "E": 6, "C": 6, "R": 6, "CCE": 6.0, "codigo": "O6", "confianza": "BAJA", "dist_AU": 0.00715, "insol": 15.0, "disp": "Ganímedes futuro"}, {"nombre": "Europa_futuro", "sistema": "Júpiter", "tipo": "Satelite_futuro", "familia": "O", "E": 7, "C": 7, "R": 6, "CCE": 6.67, "codigo": "O7", "confianza": "BAJA", "dist_AU": 0.00428, "insol": 50.0, "disp": "Europa futuro"}, {"nombre": "Titán_futuro", "sistema": "Saturno", "tipo": "Satelite_futuro", "familia": "M", "E": 6, "C": 6, "R": 6, "CCE": 6.0, "codigo": "M6", "confianza": "BAJA", "dist_AU": 0.01519, "insol": 5.0, "disp": "Titán futuro"}, {"nombre": "Enceladus_futuro", "sistema": "Saturno", "tipo": "Satelite_futuro", "familia": "O", "E": 6, "C": 6, "R": 6, "CCE": 6.0, "codigo": "O6", "confianza": "BAJA", "dist_AU": 0.00238, "insol": 0.3, "disp": "Enceladus futuro"}, {"nombre": "Tierra_futuro", "sistema": "Solar", "tipo": "Planeta_futuro", "familia": "A", "E": 8, "C": 8, "R": 7, "CCE": 7.67, "codigo": "A8", "confianza": "MEDIA", "dist_AU": 1.0, "insol": 1360.0, "disp": "Tierra futuro"}, {"nombre": "Venus_runaway", "sistema": "Solar", "tipo": "Planeta_hitoricoEscenario", "familia": "G", "E": 8, "C": 1, "R": 3, "CCE": 4.0, "codigo": "G4", "confianza": "MEDIA", "dist_AU": 0.72, "insol": 2600.0, "disp": "Venus runaway"}, {"nombre": "Marte_futuro", "sistema": "Solar", "tipo": "Planeta_futuro", "familia": "C", "E": 4, "C": 2, "R": 4, "CCE": 3.33, "codigo": "C3", "confianza": "BAJA", "dist_AU": 1.52, "insol": 590.0, "disp": "Marte futuro"}, {"nombre": "Neptuno_futuro", "sistema": "Solar", "tipo": "Planeta_futuro", "familia": "G", "E": 4, "C": 2, "R": 5, "CCE": 3.67, "codigo": "G4", "confianza": "BAJA", "dist_AU": 30.1, "insol": 1.5, "disp": "Neptuno futuro"}, {"nombre": "Pluton_historico", "sistema": "Solar", "tipo": "Planetoide_historico", "familia": "V", "E": 4, "C": 4, "R": 4, "CCE": 4.0, "codigo": "V4", "confianza": "BAJA", "dist_AU": 39.5, "insol": 0.05, "disp": "Pluton historico"}], "stars": [{"sistema": "Solar", "n_cuerpos": 11, "CCE_max": 8.67, "CCE_medio": 4.21, "N_ZEE": 2, "diversidad": 4, "familias": "ACGV", "mejor_cuerpo": "Tierra", "mejor_codigo": "A9", "indice_anfitrion": 7.79, "disp": "Solar", "best": "Tierra"}, {"sistema": "Jupiter", "n_cuerpos": 4, "CCE_max": 6.67, "CCE_medio": 5.5, "N_ZEE": 2, "diversidad": 3, "familias": "COV", "mejor_cuerpo": "Europa", "mejor_codigo": "O7", "indice_anfitrion": 6.8, "disp": "Jupiter", "best": "Europa"}, {"sistema": "Kepler-452", "n_cuerpos": 1, "CCE_max": 5.67, "CCE_medio": 5.67, "N_ZEE": 1, "diversidad": 1, "familias": "A", "mejor_cuerpo": "Kepler_452b", "mejor_codigo": "A6", "indice_anfitrion": 5.67, "disp": "Kepler-452", "best": "Kepler 452b"}, {"sistema": "Saturno", "n_cuerpos": 7, "CCE_max": 6.0, "CCE_medio": 3.43, "N_ZEE": 1, "diversidad": 3, "familias": "CMO", "mejor_cuerpo": "Encélado", "mejor_codigo": "O6", "indice_anfitrion": 5.57, "disp": "Saturno", "best": "Encélado"}, {"sistema": "TRAPPIST-1", "n_cuerpos": 7, "CCE_max": 4.33, "CCE_medio": 3.95, "N_ZEE": 0, "diversidad": 4, "familias": "CGOV", "mejor_cuerpo": "TRAPPIST_1d", "mejor_codigo": "X4", "indice_anfitrion": 5.08, "disp": "TRAPPIST-1", "best": "TRAPPIST 1d"}, {"sistema": "Kepler-442", "n_cuerpos": 1, "CCE_max": 5.0, "CCE_medio": 5.0, "N_ZEE": 0, "diversidad": 1, "familias": "A", "mejor_cuerpo": "Kepler_442b", "mejor_codigo": "A5", "indice_anfitrion": 5.0, "disp": "Kepler-442", "best": "Kepler 442b"}, {"sistema": "Kepler-62", "n_cuerpos": 2, "CCE_max": 5.0, "CCE_medio": 4.67, "N_ZEE": 0, "diversidad": 1, "familias": "A", "mejor_cuerpo": "Kepler_62e", "mejor_codigo": "A5", "indice_anfitrion": 4.87, "disp": "Kepler-62", "best": "Kepler 62e"}, {"sistema": "LHS 1140", "n_cuerpos": 1, "CCE_max": 4.67, "CCE_medio": 4.67, "N_ZEE": 0, "diversidad": 1, "familias": "O", "mejor_cuerpo": "LHS_1140b", "mejor_codigo": "O5", "indice_anfitrion": 4.67, "disp": "LHS 1140", "best": "LHS 1140b"}, {"sistema": "Kepler-1649", "n_cuerpos": 1, "CCE_max": 4.67, "CCE_medio": 4.67, "N_ZEE": 0, "diversidad": 1, "familias": "A", "mejor_cuerpo": "Kepler_1649c", "mejor_codigo": "A5", "indice_anfitrion": 4.67, "disp": "Kepler-1649", "best": "Kepler 1649c"}, {"sistema": "55 Cancri", "n_cuerpos": 5, "CCE_max": 4.33, "CCE_medio": 3.67, "N_ZEE": 0, "diversidad": 2, "familias": "GV", "mejor_cuerpo": "55_Cancri_e", "mejor_codigo": "V4", "indice_anfitrion": 4.36, "disp": "55 Cancri", "best": "55 Cancri e"}, {"sistema": "Kepler-186", "n_cuerpos": 1, "CCE_max": 4.33, "CCE_medio": 4.33, "N_ZEE": 0, "diversidad": 1, "familias": "A", "mejor_cuerpo": "Kepler_186f", "mejor_codigo": "A4", "indice_anfitrion": 4.33, "disp": "Kepler-186", "best": "Kepler 186f"}, {"sistema": "K2-18", "n_cuerpos": 1, "CCE_max": 4.33, "CCE_medio": 4.33, "N_ZEE": 0, "diversidad": 1, "familias": "G", "mejor_cuerpo": "K2_18b", "mejor_codigo": "G4", "indice_anfitrion": 4.33, "disp": "K2-18", "best": "K2 18b"}, {"sistema": "TOI-700", "n_cuerpos": 1, "CCE_max": 4.33, "CCE_medio": 4.33, "N_ZEE": 0, "diversidad": 1, "familias": "A", "mejor_cuerpo": "TOI_700d", "mejor_codigo": "A4", "indice_anfitrion": 4.33, "disp": "TOI-700", "best": "TOI 700d"}, {"sistema": "Gliese 12", "n_cuerpos": 1, "CCE_max": 4.33, "CCE_medio": 4.33, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "Gliese_12b", "mejor_codigo": "X4", "indice_anfitrion": 4.33, "disp": "Gliese 12", "best": "Gliese 12b"}, {"sistema": "Kepler-22", "n_cuerpos": 1, "CCE_max": 4.33, "CCE_medio": 4.33, "N_ZEE": 0, "diversidad": 1, "familias": "G", "mejor_cuerpo": "Kepler_22b", "mejor_codigo": "G4", "indice_anfitrion": 4.33, "disp": "Kepler-22", "best": "Kepler 22b"}, {"sistema": "Teegarden's Star", "n_cuerpos": 2, "CCE_max": 4.33, "CCE_medio": 4.0, "N_ZEE": 0, "diversidad": 1, "familias": "A", "mejor_cuerpo": "Teegarden_b", "mejor_codigo": "A4", "indice_anfitrion": 4.2, "disp": "Teegarden's Star", "best": "Teegarden b"}, {"sistema": "Tau Ceti", "n_cuerpos": 2, "CCE_max": 4.0, "CCE_medio": 4.0, "N_ZEE": 0, "diversidad": 1, "familias": "A", "mejor_cuerpo": "Tau_Ceti_e", "mejor_codigo": "A4", "indice_anfitrion": 4.0, "disp": "Tau Ceti", "best": "Tau Ceti e"}, {"sistema": "HD 20794", "n_cuerpos": 1, "CCE_max": 4.0, "CCE_medio": 4.0, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "HD_20794d", "mejor_codigo": "X4", "indice_anfitrion": 4.0, "disp": "HD 20794", "best": "HD 20794d"}, {"sistema": "HD 85512", "n_cuerpos": 1, "CCE_max": 4.0, "CCE_medio": 4.0, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "HD_85512b", "mejor_codigo": "X4", "indice_anfitrion": 4.0, "disp": "HD 85512", "best": "HD 85512b"}, {"sistema": "Kepler-296", "n_cuerpos": 1, "CCE_max": 4.0, "CCE_medio": 4.0, "N_ZEE": 0, "diversidad": 1, "familias": "G", "mejor_cuerpo": "Kepler_296f", "mejor_codigo": "G4", "indice_anfitrion": 4.0, "disp": "Kepler-296", "best": "Kepler 296f"}, {"sistema": "HD 69830", "n_cuerpos": 1, "CCE_max": 4.0, "CCE_medio": 4.0, "N_ZEE": 0, "diversidad": 1, "familias": "G", "mejor_cuerpo": "HD_69830d", "mejor_codigo": "G4", "indice_anfitrion": 4.0, "disp": "HD 69830", "best": "HD 69830d"}, {"sistema": "Ross 128", "n_cuerpos": 1, "CCE_max": 4.0, "CCE_medio": 4.0, "N_ZEE": 0, "diversidad": 1, "familias": "A", "mejor_cuerpo": "Ross_128b", "mejor_codigo": "A4", "indice_anfitrion": 4.0, "disp": "Ross 128", "best": "Ross 128b"}, {"sistema": "GJ 357", "n_cuerpos": 2, "CCE_max": 4.0, "CCE_medio": 3.83, "N_ZEE": 0, "diversidad": 1, "familias": "V", "mejor_cuerpo": "GJ_357b", "mejor_codigo": "V4", "indice_anfitrion": 3.93, "disp": "GJ 357", "best": "GJ 357b"}, {"sistema": "Gliese 667C", "n_cuerpos": 3, "CCE_max": 4.0, "CCE_medio": 3.78, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "Gliese_667Cb", "mejor_codigo": "X4", "indice_anfitrion": 3.91, "disp": "Gliese 667C", "best": "Gliese 667Cb"}, {"sistema": "HD 40307", "n_cuerpos": 3, "CCE_max": 4.0, "CCE_medio": 3.22, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "HD_40307g", "mejor_codigo": "X4", "indice_anfitrion": 3.69, "disp": "HD 40307", "best": "HD 40307g"}, {"sistema": "Wolf 1061", "n_cuerpos": 1, "CCE_max": 3.67, "CCE_medio": 3.67, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "Wolf_1061c", "mejor_codigo": "X4", "indice_anfitrion": 3.67, "disp": "Wolf 1061", "best": "Wolf 1061c"}, {"sistema": "Epsilon Eridani", "n_cuerpos": 1, "CCE_max": 3.67, "CCE_medio": 3.67, "N_ZEE": 0, "diversidad": 1, "familias": "G", "mejor_cuerpo": "Epsilon_Eridani_b", "mejor_codigo": "G4", "indice_anfitrion": 3.67, "disp": "Epsilon Eridani", "best": "Epsilon Eridani b"}, {"sistema": "TOI-1693", "n_cuerpos": 1, "CCE_max": 3.67, "CCE_medio": 3.67, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "TOI_1693b", "mejor_codigo": "X4", "indice_anfitrion": 3.67, "disp": "TOI-1693", "best": "TOI 1693b"}, {"sistema": "Gliese 163", "n_cuerpos": 1, "CCE_max": 3.67, "CCE_medio": 3.67, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "Gliese_163c", "mejor_codigo": "X4", "indice_anfitrion": 3.67, "disp": "Gliese 163", "best": "Gliese 163c"}, {"sistema": "Gliese 832", "n_cuerpos": 1, "CCE_max": 3.67, "CCE_medio": 3.67, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "Gliese_832c", "mejor_codigo": "X4", "indice_anfitrion": 3.67, "disp": "Gliese 832", "best": "Gliese 832c"}, {"sistema": "Neptuno", "n_cuerpos": 2, "CCE_max": 3.67, "CCE_medio": 2.5, "N_ZEE": 0, "diversidad": 2, "familias": "CV", "mejor_cuerpo": "Triton", "mejor_codigo": "V4", "indice_anfitrion": 3.5, "disp": "Neptuno", "best": "Triton"}, {"sistema": "Gliese 581", "n_cuerpos": 1, "CCE_max": 3.33, "CCE_medio": 3.33, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "Gliese_581g", "mejor_codigo": "X3", "indice_anfitrion": 3.33, "disp": "Gliese 581", "best": "Gliese 581g"}, {"sistema": "Proxima Centauri", "n_cuerpos": 1, "CCE_max": 3.0, "CCE_medio": 3.0, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "Proxima_Centauri_b", "mejor_codigo": "X3", "indice_anfitrion": 3.0, "disp": "Proxima Centauri", "best": "Proxima Centauri b"}, {"sistema": "Barnard's Star", "n_cuerpos": 2, "CCE_max": 3.0, "CCE_medio": 3.0, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "Barnard_Star_c", "mejor_codigo": "X3", "indice_anfitrion": 3.0, "disp": "Barnard's Star", "best": "Barnard Star c"}, {"sistema": "Gliese 849", "n_cuerpos": 1, "CCE_max": 3.0, "CCE_medio": 3.0, "N_ZEE": 0, "diversidad": 1, "familias": "G", "mejor_cuerpo": "Gliese_849b", "mejor_codigo": "G3", "indice_anfitrion": 3.0, "disp": "Gliese 849", "best": "Gliese 849b"}, {"sistema": "Epsilon Indi A", "n_cuerpos": 1, "CCE_max": 2.67, "CCE_medio": 2.67, "N_ZEE": 0, "diversidad": 1, "familias": "G", "mejor_cuerpo": "Epsilon_Indi_Ab", "mejor_codigo": "G3", "indice_anfitrion": 2.67, "disp": "Epsilon Indi A", "best": "Epsilon Indi Ab"}, {"sistema": "Tierra", "n_cuerpos": 1, "CCE_max": 2.0, "CCE_medio": 2.0, "N_ZEE": 0, "diversidad": 1, "familias": "C", "mejor_cuerpo": "Luna", "mejor_codigo": "C2", "indice_anfitrion": 2.0, "disp": "Tierra", "best": "Luna"}, {"sistema": "Marte", "n_cuerpos": 2, "CCE_max": 1.0, "CCE_medio": 0.83, "N_ZEE": 0, "diversidad": 0, "familias": "-", "mejor_cuerpo": "Fobos", "mejor_codigo": "X1", "indice_anfitrion": 0.93, "disp": "Marte", "best": "Fobos"}], "hosts": [{"sistema": "Sol", "ra": 0.0, "dec": 0.0, "dist": 0.0, "fam": "A", "code": "A9", "idx": 7.79}, {"sistema": "Proxima Centauri", "ra": 14.483, "dec": -62.67, "dist": 4.25, "fam": "X", "code": "X3", "idx": 3.0}, {"sistema": "Barnard's Star", "ra": 17.95, "dec": 4.68, "dist": 5.96, "fam": "X", "code": "X3", "idx": 3.0}, {"sistema": "Ross 128", "ra": 11.783, "dec": 0.8, "dist": 11.01, "fam": "A", "code": "A4", "idx": 4.0}, {"sistema": "Epsilon Eridani", "ra": 3.533, "dec": -9.45, "dist": 10.47, "fam": "G", "code": "G4", "idx": 3.67}, {"sistema": "Tau Ceti", "ra": 1.733, "dec": -15.93, "dist": 11.91, "fam": "A", "code": "A4", "idx": 4.0}, {"sistema": "Epsilon Indi A", "ra": 22.05, "dec": -56.78, "dist": 11.87, "fam": "G", "code": "G3", "idx": 2.67}, {"sistema": "Teegarden's Star", "ra": 2.883, "dec": 16.87, "dist": 12.5, "fam": "A", "code": "A4", "idx": 4.2}, {"sistema": "Wolf 1061", "ra": 16.5, "dec": -12.65, "dist": 14.05, "fam": "X", "code": "X4", "idx": 3.67}, {"sistema": "HD 20794", "ra": 3.317, "dec": -43.07, "dist": 19.7, "fam": "X", "code": "X4", "idx": 4.0}, {"sistema": "Gliese 581", "ra": 15.324, "dec": -7.72, "dist": 20.5, "fam": "X", "code": "X3", "idx": 3.33}, {"sistema": "Gliese 667C", "ra": 17.316, "dec": -34.997, "dist": 23.63, "fam": "X", "code": "X4", "idx": 3.91}, {"sistema": "GJ 357", "ra": 9.601, "dec": -21.66, "dist": 31.0, "fam": "V", "code": "V4", "idx": 3.93}, {"sistema": "TRAPPIST-1", "ra": 23.108, "dec": -5.04, "dist": 40.66, "fam": "X", "code": "X4", "idx": 5.08}, {"sistema": "55 Cancri", "ra": 8.877, "dec": 28.33, "dist": 41.0, "fam": "V", "code": "V4", "idx": 4.36}, {"sistema": "LHS 1140", "ra": 0.75, "dec": -15.27, "dist": 48.8, "fam": "O", "code": "O5", "idx": 4.67}]};
+const FAM = {A:'--fA',M:'--fM',O:'--fO',V:'--fV',C:'--fC',G:'--fG',X:'--fX'};
+const FAMNAME = {A:'Acuática',M:'Metánica',O:'Océano interno',V:'Volcánica',C:'Criogénica',G:'Gaseosa',X:'Desconocida'};
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const off = new Set();
+
+// tabs
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected', x===t));
+  ['ecr','dist','stars','map','gal'].forEach(v=>document.getElementById('view-'+v).classList.toggle('hide', v!==t.dataset.view));
+  draw();
+});
+
+function legend(el, cb){
+  el.innerHTML='';
+  Object.keys(FAM).forEach(f=>{
+    const d=document.createElement('span'); d.className='lg'+(off.has(f)?' off':'');
+    d.innerHTML='<span class="dot" style="background:'+cssv(FAM[f])+'"></span>'+f+' · '+FAMNAME[f];
+    d.onclick=()=>{off.has(f)?off.delete(f):off.add(f); cb();};
+    el.appendChild(d);
+  });
+}
+
+// generic scatter
+function scatter(canvas, tip, pts, xacc, yacc, opts){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  const W=canvas.clientWidth, H=opts.h||440;
+  canvas.width=W*dpr; canvas.height=H*dpr; canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+  const mL=44,mR=16,mT=14,mB=40, pw=W-mL-mR, ph=H-mT-mB;
+  const xs=pts.map(xacc), ys=pts.map(yacc);
+  const xmin=opts.xmin!=null?opts.xmin:Math.min(...xs), xmax=opts.xmax!=null?opts.xmax:Math.max(...xs);
+  const ymin=opts.ymin!=null?opts.ymin:Math.min(...ys), ymax=opts.ymax!=null?opts.ymax:Math.max(...ys);
+  const X=v=>mL+(v-xmin)/(xmax-xmin)*pw, Y=v=>mT+ph-(v-ymin)/(ymax-ymin)*ph;
+  // grid
+  ctx.strokeStyle=cssv('--grid'); ctx.fillStyle=cssv('--muted'); ctx.lineWidth=1;
+  ctx.font='11px system-ui'; ctx.textAlign='center'; ctx.textBaseline='top';
+  opts.xticks.forEach(tk=>{const x=X(tk.v);ctx.beginPath();ctx.moveTo(x,mT);ctx.lineTo(x,mT+ph);ctx.stroke();ctx.fillText(tk.l,x,mT+ph+7);});
+  ctx.textAlign='right'; ctx.textBaseline='middle';
+  opts.yticks.forEach(tk=>{const y=Y(tk.v);ctx.beginPath();ctx.moveTo(mL,y);ctx.lineTo(mL+pw,y);ctx.stroke();ctx.fillText(tk.l,mL-8,y);});
+  ctx.textAlign='center';ctx.textBaseline='top';ctx.fillStyle=cssv('--muted');ctx.font='12px system-ui';
+  ctx.fillText(opts.xlab, mL+pw/2, H-16);
+  ctx.save();ctx.translate(13,mT+ph/2);ctx.rotate(-Math.PI/2);ctx.fillText(opts.ylab,0,0);ctx.restore();
+  const shown=pts.filter(p=>!off.has(p.familia));
+  const hit=[];
+  shown.forEach(p=>{
+    const x=X(xacc(p)),y=Y(yacc(p)),r=opts.rad?opts.rad(p):5;
+    ctx.beginPath();ctx.arc(x,y,r,0,7);
+    ctx.fillStyle=cssv(FAM[p.familia])+ (p.confianza==='BAJA'?'99':'');
+    ctx.globalAlpha=p.confianza==='BAJA'?.72:.95; ctx.fill(); ctx.globalAlpha=1;
+    ctx.lineWidth=1.2;ctx.strokeStyle=cssv('--panel');ctx.stroke();
+    hit.push({x,y,r:Math.max(r,7),p});
+  });
+  // label a few standouts
+  ctx.fillStyle=cssv('--ink');ctx.font='600 11px system-ui';ctx.textAlign='left';ctx.textBaseline='middle';
+  shown.filter(p=>opts.labelset.has(p.nombre)).forEach(p=>{
+    const x=X(xacc(p)),y=Y(yacc(p)),r=opts.rad?opts.rad(p):5;
+    ctx.fillText(' '+p.disp, x+r, y);
+  });
+  canvas.onmousemove=e=>{
+    const rc=canvas.getBoundingClientRect(),mx=e.clientX-rc.left,my=e.clientY-rc.top;
+    let f=null; for(const h of hit){if((mx-h.x)**2+(my-h.y)**2<=(h.r+3)**2){f=h;break;}}
+    if(f){tip.style.opacity=1;tip.style.left=f.x+'px';tip.style.top=f.y+'px';
+      tip.innerHTML='<b>'+f.p.disp+'</b> · '+f.p.codigo+'<br>E'+f.p.E+' C'+f.p.C+' R'+f.p.R+' · CCE '+f.p.CCE+'<br>'+f.p.sistema+' · '+f.p.confianza;
+    } else tip.style.opacity=0;
+  };
+  canvas.onmouseleave=()=>tip.style.opacity=0;
+}
+
+const LAB1=new Set(['Tierra','Titan','Europa','Io','Jupiter','Venus','Marte','Luna','Kepler_452b','Encélado','Ganimedes']);
+const LAB2=new Set(['Tierra','Europa','Titan','Io','Jupiter','Neptuno','Kepler_452b','Proxima_Centauri_b','Eris','TRAPPIST_1e']);
+
+function drawECR(){
+  scatter(document.getElementById('c1'),document.getElementById('t1'),
+    DATA.bodies,p=>p.E,p=>p.C,{
+    xmin:0,xmax:9.5,ymin:0,ymax:9.5,xlab:'Energía (E)',ylab:'Persistencia química (C)',
+    xticks:[0,2,4,6,8,9].map(v=>({v,l:v})),yticks:[0,2,4,6,8,9].map(v=>({v,l:v})),
+    rad:p=>3.5+p.R*0.9, labelset:LAB1});
+}
+function drawDist(){
+  const bs=DATA.bodies.filter(b=>b.dist_AU&&b.dist_AU>0);
+  const L=v=>Math.log10(v);
+  scatter(document.getElementById('c2'),document.getElementById('t2'),
+    bs,p=>L(p.dist_AU),p=>p.CCE,{
+    xmin:-4,xmax:2,ymin:0,ymax:9,xlab:'Distancia orbital (AU, escala log)',ylab:'CCE',
+    xticks:[{v:-4,l:'0.0001'},{v:-3,l:'0.001'},{v:-2,l:'0.01'},{v:-1,l:'0.1'},{v:0,l:'1'},{v:1,l:'10'},{v:2,l:'100'}],
+    yticks:[0,2,4,6,8].map(v=>({v,l:v})), rad:p=>3.5+p.R*0.8, labelset:LAB2});
+}
+function drawStars(){
+  const tb=document.querySelector('#startab tbody'); tb.innerHTML='';
+  const mx=Math.max(...DATA.stars.map(s=>s.indice_anfitrion));
+  DATA.stars.forEach(s=>{
+    const fam0=s.familias[0]||'X'; const col=cssv(FAM[fam0]||'--fX');
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td>'+s.disp+'</td><td class="code">'+s.indice_anfitrion.toFixed(2)+'</td>'+
+      '<td style="width:120px"><span class="rankbar" style="width:'+(s.indice_anfitrion/mx*100)+'px;background:'+col+'"></span></td>'+
+      '<td>'+s.CCE_max.toFixed(2)+'</td><td>'+s.CCE_medio.toFixed(2)+'</td><td>'+s.N_ZEE+'</td>'+
+      '<td class="code">'+s.familias+'</td><td>'+s.best+' <span class="code">'+s.mejor_codigo+'</span></td>';
+    tb.appendChild(tr);
+  });
+}
+// ---- mapa del vecindario (proyeccion 3D -> plano) ----
+function xyz(h){ // ra(horas),dec(grados),dist(ly) -> cartesianas ecuatoriales
+  const ra=h.ra*15*Math.PI/180, dec=h.dec*Math.PI/180, d=h.dist;
+  return {x:d*Math.cos(dec)*Math.cos(ra), y:d*Math.cos(dec)*Math.sin(ra), z:d*Math.sin(dec)};
+}
+function drawMap(){
+  const canvas=document.getElementById('c3'), tip=document.getElementById('t3');
+  const dpr=Math.min(window.devicePixelRatio||1,2), W=canvas.clientWidth, H=480;
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+  const cx=W/2, cy=H/2, R=50, scale=(Math.min(W,H)/2-30)/R; // 50 ly -> borde
+  // anillos de distancia
+  ctx.strokeStyle=cssv('--grid');ctx.fillStyle=cssv('--muted');ctx.font='10px system-ui';
+  ctx.textAlign='center';
+  [10,20,30,40,50].forEach(d=>{ctx.beginPath();ctx.arc(cx,cy,d*scale,0,7);ctx.stroke();
+    ctx.fillText(d+' ly',cx,cy-d*scale-3);});
+  const zmax=50;
+  const hit=[];
+  DATA.hosts.filter(h=>!off.has(h.fam)).forEach(h=>{
+    const p=xyz(h), sx=cx+p.x*scale, sy=cy-p.y*scale;
+    const bright=0.55+0.45*(p.z/zmax); // z fuera del plano -> brillo
+    const rr=h.sistema==='Sol'?6:4+h.idx*0.9;
+    ctx.globalAlpha=Math.max(.35,Math.min(1,bright));
+    ctx.beginPath();ctx.arc(sx,sy,rr,0,7);
+    ctx.fillStyle=h.sistema==='Sol'?cssv('--accent'):cssv(FAM[h.fam]);ctx.fill();
+    ctx.globalAlpha=1;ctx.lineWidth=1.2;ctx.strokeStyle=cssv('--panel');ctx.stroke();
+    hit.push({x:sx,y:sy,r:rr+3,h});
+  });
+  // etiquetas
+  ctx.fillStyle=cssv('--ink');ctx.font='600 10.5px system-ui';ctx.textAlign='left';ctx.textBaseline='middle';
+  DATA.hosts.filter(h=>!off.has(h.fam)).forEach(h=>{
+    const p=xyz(h);ctx.fillText(' '+h.sistema,cx+p.x*scale+5,cy-p.y*scale);
+  });
+  canvas.onmousemove=e=>{const rc=canvas.getBoundingClientRect(),mx=e.clientX-rc.left,my=e.clientY-rc.top;
+    let f=null;for(const t of hit){if((mx-t.x)**2+(my-t.y)**2<=t.r*t.r){f=t;break;}}
+    if(f){tip.style.opacity=1;tip.style.left=f.x+'px';tip.style.top=f.y+'px';
+      tip.innerHTML='<b>'+f.h.sistema+'</b><br>'+f.h.dist.toFixed(1)+' ly · mejor: '+f.h.code+'<br>Índice anfitrión '+f.h.idx.toFixed(2);
+    }else tip.style.opacity=0;};
+  canvas.onmouseleave=()=>tip.style.opacity=0;
+}
+// ---- marco galactocentrico ----
+const R0=26670; // ly Sol-centro galactico
+function galcart(h){ // RA/Dec/dist -> galactocentricas (X hacia afuera desde centro, Y rotacion, Z)
+  const ra=h.ra*15*Math.PI/180, dec=h.dec*Math.PI/180, d=h.dist;
+  const ex=Math.cos(dec)*Math.cos(ra), ey=Math.cos(dec)*Math.sin(ra), ez=Math.sin(dec);
+  const u=(-0.0548756*ex -0.8734371*ey -0.4838350*ez)*d; // hacia centro galactico
+  const v=( 0.4941094*ex -0.4448296*ey +0.7469822*ez)*d; // sentido de rotacion
+  const w=(-0.8676661*ex -0.1980764*ey +0.4559838*ez)*d; // hacia polo norte galactico
+  return {X:R0-u, Y:v, Z:w};
+}
+function drawGal(){
+  const canvas=document.getElementById('c4'), tip=document.getElementById('t4');
+  const dpr=Math.min(window.devicePixelRatio||1,2), W=canvas.clientWidth, H=520;
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+  const cx=W*0.5, cy=H*0.56, S=(Math.min(W,H)*0.44)/32000; // 32000 ly -> borde
+  // disco galactico (relleno tenue) + anillos
+  ctx.beginPath();ctx.arc(cx,cy,50000*S,0,7);
+  ctx.fillStyle=cssv('--grid');ctx.globalAlpha=.25;ctx.fill();ctx.globalAlpha=1;
+  ctx.strokeStyle=cssv('--grid');ctx.fillStyle=cssv('--muted');ctx.font='10px system-ui';ctx.textAlign='center';
+  [10000,20000,30000].forEach(r=>{ctx.beginPath();ctx.arc(cx,cy,r*S,0,7);ctx.stroke();
+    ctx.fillText((r/1000)+'k ly',cx,cy-r*S-3);});
+  // centro galactico
+  ctx.beginPath();ctx.arc(cx,cy,5,0,7);ctx.fillStyle=cssv('--accent');ctx.fill();
+  ctx.fillStyle=cssv('--ink');ctx.font='600 11px system-ui';ctx.textAlign='center';
+  ctx.fillText('Centro galáctico (Sgr A*)',cx,cy+16);
+  // Sol en (R0,0) -> a la derecha
+  const sunx=cx+R0*S, suny=cy;
+  ctx.beginPath();ctx.arc(sunx,suny,4,0,7);ctx.fillStyle=cssv('--fA');ctx.fill();
+  ctx.strokeStyle=cssv('--ink');ctx.lineWidth=1;ctx.strokeRect(sunx-9,suny-9,18,18);
+  ctx.fillStyle=cssv('--ink');ctx.font='10.5px system-ui';ctx.textAlign='left';
+  ctx.fillText(' Sol · vecindario (26.670 ly)',sunx+8,suny-12);
+  // --- zoom del vecindario ---
+  const ix=W*0.80, iy=H*0.26, IR=Math.min(96,W*0.13), ISC=IR/70; // 70 ly -> radio
+  // linea de llamada
+  ctx.strokeStyle=cssv('--hair');ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(sunx+9,suny-9);ctx.lineTo(ix,iy+IR);ctx.stroke();
+  ctx.save();ctx.beginPath();ctx.arc(ix,iy,IR,0,7);ctx.clip();
+  ctx.fillStyle=cssv('--panel');ctx.fillRect(ix-IR,iy-IR,IR*2,IR*2);
+  // flecha hacia centro galactico (izquierda, -X)
+  ctx.strokeStyle=cssv('--accent');ctx.fillStyle=cssv('--accent');ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(ix+IR*0.7,iy-IR*0.78);ctx.lineTo(ix-IR*0.7,iy-IR*0.78);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(ix-IR*0.7,iy-IR*0.78);ctx.lineTo(ix-IR*0.55,iy-IR*0.85);ctx.lineTo(ix-IR*0.55,iy-IR*0.71);ctx.fill();
+  const hit=[];
+  DATA.hosts.filter(h=>!off.has(h.fam)).forEach(h=>{
+    const g=galcart(h), dx=g.X-R0, dy=g.Y; // relativo al Sol
+    const sx=ix+dx*ISC, sy=iy-dy*ISC;
+    const rr=h.sistema==='Sol'?4:3+h.idx*0.7;
+    ctx.beginPath();ctx.arc(sx,sy,rr,0,7);
+    ctx.fillStyle=h.sistema==='Sol'?cssv('--fA'):cssv(FAM[h.fam]);ctx.fill();
+    ctx.lineWidth=1;ctx.strokeStyle=cssv('--panel');ctx.stroke();
+    hit.push({x:sx,y:sy,r:rr+3,h,g});
+  });
+  ctx.restore();
+  ctx.beginPath();ctx.arc(ix,iy,IR,0,7);ctx.strokeStyle=cssv('--hair');ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle=cssv('--accent');ctx.font='9px system-ui';ctx.textAlign='left';
+  ctx.fillText('→ centro galáctico',ix-IR*0.68,iy-IR*0.86);
+  ctx.fillStyle=cssv('--muted');ctx.textAlign='center';
+  ctx.fillText('vecindario ×250',ix,iy+IR+12);
+  canvas.onmousemove=e=>{const rc=canvas.getBoundingClientRect(),mx=e.clientX-rc.left,my=e.clientY-rc.top;
+    let f=null;for(const t of hit){if((mx-t.x)**2+(my-t.y)**2<=t.r*t.r){f=t;break;}}
+    if(f){const Rgc=Math.sqrt(f.g.X**2+f.g.Y**2+f.g.Z**2);
+      tip.style.opacity=1;tip.style.left=f.x+'px';tip.style.top=f.y+'px';
+      tip.innerHTML='<b>'+f.h.sistema+'</b><br>al centro galáctico: '+Math.round(Rgc).toLocaleString()+' ly<br>('+(f.h.dist).toFixed(1)+' ly del Sol)';
+    }else tip.style.opacity=0;};
+  canvas.onmouseleave=()=>tip.style.opacity=0;
+}
+function draw(){
+  const v=document.querySelector('.tab[aria-selected="true"]').dataset.view;
+  if(v==='ecr'){legend(document.getElementById('leg1'),drawECR);drawECR();}
+  if(v==='dist'){legend(document.getElementById('leg2'),drawDist);drawDist();}
+  if(v==='stars'){drawStars();}
+  if(v==='map'){legend(document.getElementById('leg3'),drawMap);drawMap();}
+  if(v==='gal'){legend(document.getElementById('leg4'),drawGal);drawGal();}
+}
+draw();
+new ResizeObserver(()=>draw()).observe(document.querySelector('.inner'));
+matchMedia('(prefers-color-scheme:dark)').addEventListener('change',draw);
+const mo=new MutationObserver(draw);mo.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+</script>

@@ -340,15 +340,19 @@ function drawGalMap(){
   grad.addColorStop(0,'#1a0033'); grad.addColorStop(0.3,'#0b0015'); grad.addColorStop(1,'#000000');
   ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
 
-  // brazos espirales procedurales (4 brazos)
-  ctx.globalAlpha=0.15; ctx.strokeStyle=cssv('--accent'); ctx.lineWidth=2;
+  // brazos espirales simplificados (anillos + patrón)
+  ctx.globalAlpha=0.08; ctx.strokeStyle=cssv('--accent'); ctx.lineWidth=1;
+  for(let r=5000;r<30000;r+=2000){
+    ctx.beginPath();ctx.arc(cx,cy,r*scale,0,7);ctx.stroke();
+  }
+  ctx.globalAlpha=0.12; ctx.lineWidth=2;
   for(let arm=0;arm<4;arm++){
     ctx.beginPath();
-    for(let r=0;r<30000;r+=100){
-      const angle=arm*Math.PI/2 + r*0.0003; // pitch angle
+    for(let r=5000;r<28000;r+=500){
+      const angle=arm*Math.PI/2 + r*0.0001;
       const x=cx+r*scale*Math.cos(angle);
       const y=cy+r*scale*Math.sin(angle);
-      if(r===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      if(r===5000) ctx.moveTo(x,y); else ctx.lineTo(x,y);
     }
     ctx.stroke();
   }

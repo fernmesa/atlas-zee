@@ -1,0 +1,41 @@
+pl_name,pl_rade,pl_masse,pl_orbper,pl_eqt,disc_year,discoverymethod
+TRAPPIST-1b,1.086,0.85,1.51,288,2016,Transit
+TRAPPIST-1c,1.056,1.38,2.42,246,2016,Transit
+TRAPPIST-1d,0.784,0.41,4.05,219,2016,Transit
+TRAPPIST-1e,0.92,0.62,6.1,246,2016,Transit
+TRAPPIST-1f,1.045,0.68,9.21,218,2016,Transit
+TRAPPIST-1g,1.127,1.34,12.35,205,2016,Transit
+TRAPPIST-1h,0.755,0.26,18.77,161,2016,Transit
+Proxima b,1.27,1.27,11.19,234,2016,Radial Velocity
+Ross 128b,1.35,3.2,9.76,269,2017,Radial Velocity
+Tau Ceti e,1.95,4.3,11.35,258,2012,Radial Velocity
+Tau Ceti f,1.88,3.93,14.65,264,2012,Radial Velocity
+Kepler-442b,1.61,1.3,112.3,265,2015,Transit
+Kepler-186f,1.17,0,129.9,282,2014,Transit
+Kepler-62f,1.41,0,267.3,245,2013,Transit
+Kepler-62e,1.61,0,122.4,287,2013,Transit
+TOI-700d,1.19,0,36.03,278,2020,Transit
+GJ 667C e,1.49,2.67,28.15,278,2013,Radial Velocity
+GJ 667C f,1.46,2.13,39.04,232,2013,Radial Velocity
+Teegarden c,1.2,0,11.4,246,2018,Radial Velocity
+Teegarden b,1.05,0,4.05,282,2018,Radial Velocity
+Barnard c,0.99,3.2,4.99,291,2023,Radial Velocity
+Barnard b,1.16,0,233,124,2018,Radial Velocity
+LHS 475b,1.25,0,3.84,418,2022,Transit
+K2-18b,2.6,8.63,32.93,265,2015,Transit
+K2-18c,1.5,0,9.26,359,2019,Transit
+HD 40307g,2.13,7.1,198.7,233,2012,Radial Velocity
+Epsilon Eridani b,0.73,0.35,2500,85,2000,Radial Velocity
+Gliese 12b,1.04,0,12.76,439,2023,Transit
+Wolf 1069b,1.05,0,14.52,270,2023,Radial Velocity
+Gliese 163c,2.05,6.82,25.64,213,2012,Radial Velocity
+HD 85512b,2.1,3.6,54.3,298,2011,Radial Velocity
+Gliese 667C b,1.58,3.75,7.2,304,2012,Radial Velocity
+HD 215152b,2.0,0,44.5,287,2016,Transit
+GJ 357b,1.21,0,3.64,490,2019,Radial Velocity
+GJ 357d,1.75,0,55.7,155,2019,Radial Velocity
+L 98-59b,1.27,0,3.65,529,2021,Transit
+L 98-59c,1.26,0,9.26,331,2021,Transit
+L 98-59d,1.46,0,36.15,164,2021,Transit
+HD 40307d,1.24,0,15.32,302,2012,Radial Velocity
+HD 40307e,1.44,0,34.63,263,2012,Radial Velocity

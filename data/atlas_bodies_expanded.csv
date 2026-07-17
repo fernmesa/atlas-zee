@@ -1,0 +1,131 @@
+nombre,sistema,tipo,masa_Me,radio_Re,dist_AU,insol_Wm2,atmosfera,agua,vulcanismo,exp_E,exp_C,exp_R,exp_familia,confianza,fuentes,notas
+Mercurio,Solar,Planeta,0.055,0.383,0.39,9100,Negligible,No,Antiguo,7,2,2,V,MEDIA,observacion_directa;sondas,"Insolacion ~9100 W/m2 -> E alto; sin ciclos redox (C2); sin campo magn. util, sin atmosfera -> R2. Vulcanismo antiguo -> V"
+Venus,Solar,Planeta,0.815,0.949,0.72,2600,CO2 96% 92bar,No,Posible,8,2,3,G,MEDIA,observacion_directa;sondas,Control. Insolacion 2600 W/m2 pero invernadero; ciclos rotos C2; atmosfera densa 92bar sin campo magn. -> R3. Atmosfera espesa -> G
+Tierra,Solar,Planeta,1.0,1.0,1.0,1360,N2 78% O2 21%,Si,Activo,9,9,8,A,ALTA,observacion_directa;sondas,Control. Centro de gravedad familia A
+Marte,Solar,Planeta,0.107,0.532,1.52,590,CO2 95% 610Pa,No,Antiguo,5,3,4,C,MEDIA,observacion_directa;sondas,Control. Insolacion 590; 1-2 ciclos; campo magn. debil; congelado sin vulc. activo -> C
+Jupiter,Solar,Planeta,318,11.2,5.2,50,H2 90% He 10%,No,No,7,4,8,G,ALTA,observacion_directa;sondas,"Control. Calor interno ~24000 GW, campo magn. fuerte, orbita estable -> R8"
+Saturno,Solar,Planeta,95,9.45,9.5,15,H2 96% He 3%,No,No,5,3,8,G,ALTA,observacion_directa;sondas,Calor interno ~12600 GW pero menor insolacion; campo magn. y orbita estable -> R8
+Urano,Solar,Planeta,14.5,4.01,19.2,3.7,H2 83% He 15%,No,No,3,2,5,G,ALTA,observacion_directa;sondas,"Insolacion 3.7, calor interno minimo -> E3; campo magn. debil/desalineado -> R5"
+Neptuno,Solar,Planeta,17.1,3.88,30.1,1.5,H2 80% He 19%,No,No,4,2,5,G,ALTA,observacion_directa;sondas,Insolacion 1.5 pero calor interno ~2600 GW -> E4; campo magn. + orbita estable -> R5
+Luna,Tierra,Satelite,0.0123,0.273,0.0026,130,No,No,No,2,1,3,C,ALTA,observacion_directa;sondas,Control. Sin atmosfera ni ciclos; orbita estable pero cuerpo trivial -> C2
+Fobos,Marte,Satelite,0.000011,0.0111,0.00016,80,No,No,No,1,0,2,X,ALTA,observacion_directa;sondas,"Asteroide capturado, sin datos ZEE; orbita decayente -> X1"
+Deimos,Marte,Satelite,0.000002,0.0062,0.00048,80,No,No,No,1,0,1,X,ALTA,observacion_directa;sondas,Asteroide capturado trivial -> X1
+Io,Jupiter,Satelite,0.015,0.286,0.00282,130,SO2 delgada,No,Extremo (400+ volcanes),6,5,4,V,MEDIA,observacion_directa;sondas,Control. Vulcanismo extremo (400+ volcanes) -> V; E interna alta pero radiacion joviana degrada R -> R4
+Europa,Jupiter,Satelite,0.008,0.245,0.00428,50,O2+H2 delgada,Si (sub-hielo),No,7,7,6,O,MEDIA,observacion_directa;sondas,Control. Oceano interno predicho; hidrotermalismo -> C7; resonancia Laplace -> R6
+Ganimedes,Jupiter,Satelite,0.025,0.413,0.00715,15,O2 delgada,Si (sub-hielo),No,6,6,6,O,MEDIA,observacion_directa;sondas,"Oceano interno predicho, mayor luna; campo magn. propio inducido -> R6. O6"
+Calisto,Jupiter,Satelite,0.018,0.378,0.01259,5,CO2 delgada,Posible,No,4,4,5,C,MEDIA,observacion_directa;sondas,"Congelado, oceano profundo posible pero sin actividad; poca energia -> C4"
+Titan,Saturno,Satelite,0.0225,0.403,0.01519,5,N2 98.4% CH4 1.4%,Si (mares metano),Criovulcanismo,5,5,6,M,MEDIA,observacion_directa;sondas,"Control. Mares de metano-etano -> M; insolacion 5 + criovulc. -> E5; sin campo magn. propio, resonancia Saturno -> R6"
+Encélado,Saturno,Satelite,0.0074,0.252,0.00238,0.3,H2O+CH4+CO2,Si (sub-hielo),Geisers,6,6,6,O,MEDIA,observacion_directa;sondas,Geiseres + oceano interno activo bajo hielo -> O; mareas Saturno -> E6/R6. O6
+Mimas,Saturno,Satelite,0.00039,0.196,0.001864,1,No,No,No,1,1,4,C,MEDIA,observacion_directa;sondas,Congelado sin actividad; orbita estable -> R4. C1
+Tetis,Saturno,Satelite,0.000625,0.265,0.002948,2,No,No,No,1,1,4,C,MEDIA,observacion_directa;sondas,"Congelado, insolacion despreciable -> C1"
+Dione,Saturno,Satelite,0.00110,0.290,0.003674,2,Posible O2 + patinas,Posible,Criovulcanismo,2,2,4,C,MEDIA,observacion_directa;sondas,Posible criovulcanismo tenue pero congelado dominante -> C2
+Rea,Saturno,Satelite,0.00228,0.335,0.005518,2,Delgada,Posible,No,3,3,4,C,MEDIA,observacion_directa;sondas,"Congelada, quiza oceano interno marginal -> C3"
+Iapeto,Saturno,Satelite,0.00181,0.355,0.008888,1,Posible,Posible,No,2,2,4,C,BAJA,observacion_directa;sondas,"Bicapa, congelado sin actividad; datos limitados -> C2"
+Triton,Neptuno,Satelite,0.00358,0.271,0.000235,0.3,N2 delgada,Si (criovulcanismo),Activo,4,4,3,V,MEDIA,observacion_directa;sondas,"Criovulcanismo activo (geiseres N2) -> V; orbita retrograda capturada, inestable a Ga -> R3. V4"
+Proteo,Neptuno,Satelite,0.00050,0.210,0.000295,0.3,No,No,No,1,1,2,C,BAJA,observacion_directa;sondas,"Congelado irregular, sin datos ZEE -> C1"
+Queron,Solar,Planetoide,0.000177,0.609,39.5,0.05,No,Si hielo,No,1,2,3,C,BAJA,observacion_directa;sondas,"KBO, hielo de agua, insolacion 0.05; sin actividad -> C1 (round CCE=2)"
+Pluton,Solar,Planetoide,0.0021,0.696,39.5,0.05,N2+CH4+CO,Si hielo,Criovulcanismo,3,3,3,C,MEDIA,observacion_directa;sondas,"N2+CH4+CO, criovulcanismo (Sputnik Planitia); hielos volatiles activos pero E muy baja -> C3"
+Eris,Solar,Planetoide,0.0027,0.722,96,0.01,N2+CH4,Si hielo,No,1,2,3,C,BAJA,observacion_directa;sondas,"KBO lejano (96 AU), N2/CH4 helado, sin actividad -> C1"
+Proxima_Centauri_b,Proxima Centauri,Exoplaneta,1.27,1.1,0.0485,64,Desconocida,Especulativa,Desconocida,4,3,2,X,BAJA,NASA_Exoplanet_Archive,Insolacion 64 W/m2 pero estrella M muy activa (flares) -> R2; atmosfera desconocida/posiblemente perdida -> X3
+TRAPPIST_1b,TRAPPIST-1,Exoplaneta,1.09,1.086,0.01154,3000,Posible,Posible,Desconocida,8,2,2,V,BAJA,NASA_Exoplanet_Archive,"Muy irradiado (3000 W/m2), probablemente fundido/sin atmosfera; estrella activa -> R2. E alta pero esteril -> V"
+TRAPPIST_1c,TRAPPIST-1,Exoplaneta,0.57,1.056,0.01529,2300,Posible,Posible,Desconocida,8,2,2,G,BAJA,NASA_Exoplanet_Archive,"2300 W/m2, tipo Venus caliente; atmosfera posible densa -> G; estrella activa -> R2"
+TRAPPIST_1d,TRAPPIST-1,Exoplaneta,0.41,0.784,0.02127,960,Especulativa,Posible,Desconocida,7,3,3,X,BAJA,NASA_Exoplanet_Archive,"960 W/m2, borde interior HZ; atmosfera especulativa -> X. E7"
+TRAPPIST_1e,TRAPPIST-1,Exoplaneta,0.62,0.920,0.02925,630,Desconocida,Probable,Desconocida,5,4,3,O,BAJA,NASA_Exoplanet_Archive,"HZ central, probable agua; masa rocosa 0.62; estrella M activa -> R3. O4 (round CCE=4)"
+TRAPPIST_1f,TRAPPIST-1,Exoplaneta,0.68,1.045,0.03853,380,Desconocida,Probable,Desconocida,5,4,3,O,BAJA,NASA_Exoplanet_Archive,"HZ media, probable agua bajo hielo -> O; insolacion 380 -> E5. O4"
+TRAPPIST_1g,TRAPPIST-1,Exoplaneta,1.34,1.127,0.05227,210,Desconocida,Probable,Desconocida,5,4,3,O,BAJA,NASA_Exoplanet_Archive,"HZ exterior, probable oceano/hielo -> O; 210 W/m2. O4"
+TRAPPIST_1h,TRAPPIST-1,Exoplaneta,0.24,0.752,0.0648,130,Especulativa,Especulativa,Desconocida,4,3,3,C,BAJA,NASA_Exoplanet_Archive,"Helado, borde externo (130 W/m2), especulativo -> C (round CCE=3)"
+Kepler_186f,Kepler-186,Exoplaneta,1.44,1.17,0.432,0.32,Desconocida,Probable,Desconocida,5,4,4,A,BAJA,NASA_Exoplanet_Archive,"HZ estrella M, probable agua superficie -> A; insolacion 0.32 S -> E5. A4"
+Kepler_452b,Kepler-452,Exoplaneta,5.0,1.6,1.05,0.98,Desconocida,Especulativa,Desconocida,7,5,5,A,MEDIA,NASA_Exoplanet_Archive,Super-Tierra 0.98 S en HZ de G-type estable -> A; estrella tranquila -> R5. A6 (CCE=5.67)
+K2_18b,K2-18,Exoplaneta,8.63,2.3,0.1494,130,H2+vapor agua,Especulativa,Desconocida,6,4,3,G,MEDIA,NASA_Exoplanet_Archive,"Mini-Neptuno 2.3 R, H2+vapor agua -> G; insolacion 130 W/m2 -> E6. G4"
+Gliese_667Cc,Gliese 667C,Exoplaneta,3.8,1.5,0.125,2.0,Desconocida,Especulativa,Desconocida,5,3,3,X,BAJA,NASA_Exoplanet_Archive,"Super-Tierra estrella M triple, HZ; atmosfera desconocida -> X3"
+Gliese_581g,Gliese 581,Exoplaneta,3.1,1.3,0.146,3.0,Desconocida,Especulativa,Desconocida,5,3,2,X,BAJA,NASA_Exoplanet_Archive,Existencia cuestionada; estrella M -> R2. X3
+Wolf_1061c,Wolf 1061,Exoplaneta,4.3,1.6,0.167,3.0,Desconocida,Especulativa,Desconocida,5,3,3,X,BAJA,NASA_Exoplanet_Archive,"Super-Tierra HZ M-dwarf, atmosfera desconocida -> X3"
+Tau_Ceti_e,Tau Ceti,Exoplaneta,3.93,1.4,0.538,3.0,Desconocida,Especulativa,Desconocida,5,3,4,A,BAJA,NASA_Exoplanet_Archive,HZ interior de G-type estable (Tau Ceti); posible agua -> A; alta masa incierta. A4
+Tau_Ceti_f,Tau Ceti,Exoplaneta,3.93,1.4,0.74,1.5,Desconocida,Especulativa,Desconocida,5,3,4,A,BAJA,NASA_Exoplanet_Archive,"HZ exterior Tau Ceti, posible agua superficie -> A. A4"
+Epsilon_Eridani_b,Epsilon Eridani,Exoplaneta,600,5.0,3.39,0.10,Desconocida,No,Desconocida,5,3,3,G,BAJA,NASA_Exoplanet_Archive,"Gigante joviano (600 M) a 3.39 AU, estrella K joven activa -> G3"
+Barnard_Star_c,Barnard's Star,Exoplaneta,0.96,Desconocida,0.40,1.5,Desconocida,Especulativa,Desconocida,4,2,3,X,BAJA,NASA_Exoplanet_Archive,"Sub-Tierra fria, radio desconocido, atmosfera especulativa -> X (round CCE=3)"
+HD_40307g,HD 40307,Exoplaneta,7.1,Desconocida,0.734,0.85,Desconocida,Especulativa,Desconocida,5,3,4,X,BAJA,NASA_Exoplanet_Archive,"Super-Tierra 7.1 M, HZ de K-type; radio desconocido -> X4"
+Gliese_667Cb,Gliese 667C,Exoplaneta,9.6,Desconocida,0.184,7.0,Desconocida,Especulativa,Desconocida,7,2,3,X,BAJA,NASA_Exoplanet_Archive,"Sub-joviano caliente (7 W/m2 = 7 S), radio desconocido -> X4 (CCE=4)"
+Gliese_667Ce,Gliese 667C,Exoplaneta,3.7,Desconocida,0.258,3.5,Desconocida,Especulativa,Desconocida,5,3,3,X,BAJA,NASA_Exoplanet_Archive,"Super-Tierra HZ M-dwarf triple, radio desconocido -> X (round=4)"
+LHS_1140b,LHS 1140,Exoplaneta,6.6,1.4,0.163,5.0,Desconocida,Posible,Desconocida,6,4,4,O,MEDIA,NASA_Exoplanet_Archive,Super-Tierra densa rocosa en HZ de M tranquila; probable agua -> O; buen candidato -> R4. O5 (CCE=4.67)
+TOI_700d,TOI-700,Exoplaneta,2.6,1.144,0.294,3.0,Desconocida,Posible,Desconocida,5,4,4,A,MEDIA,NASA_Exoplanet_Archive,Tierra-size HZ de M relativamente tranquila -> A; posible agua superficie. A4
+TOI_1693b,TOI-1693,Exoplaneta,8.0,Desconocida,0.21,6.0,Desconocida,Especulativa,Desconocida,6,2,3,X,BAJA,NASA_Exoplanet_Archive,"Sub-neptuno caliente (6 S), radio desconocido -> X (round CCE=4)"
+Gliese_12b,Gliese 12,Exoplaneta,3.7,1.2,0.0685,50,Desconocida,Posible,Desconocida,7,3,3,X,BAJA,NASA_Exoplanet_Archive,"Tierra-size (50 W/m2=50 S? recien descubierto), atmosfera desconocida -> X4"
+HD_20794d,HD 20794,Exoplaneta,8.5,Desconocida,0.395,3.0,Desconocida,Especulativa,Desconocida,5,3,4,X,BAJA,NASA_Exoplanet_Archive,"Super-Tierra HZ de G-type, radio desconocido -> X4"
+55_Cancri_e,55 Cancri,Exoplaneta,8.63,2.04,0.01544,3000,Posible H2/He,No,Desconocida,8,2,3,V,MEDIA,NASA_Exoplanet_Archive,"Super-Tierra ultra-corta, 3000 S, lava fundida cara diurna; sin atmosfera estable -> V; E alta esteril. V4 (CCE=4.33)"
+55_Cancri_b,55 Cancri,Exoplaneta,0.823,Desconocida,0.115,180,Desconocida,No,Desconocida,8,2,3,G,BAJA,NASA_Exoplanet_Archive,Joviano caliente 0.115 AU (180 S); gigante -> G. G4
+55_Cancri_c,55 Cancri,Exoplaneta,3.94,Desconocida,0.240,80,Desconocida,No,Desconocida,6,2,3,G,BAJA,NASA_Exoplanet_Archive,"Mini-neptuno (80 S), gaseoso -> G4 (CCE=3.67)"
+55_Cancri_d,55 Cancri,Exoplaneta,3.835,Desconocida,0.767,20,Desconocida,Especulativa,Desconocida,5,3,4,G,BAJA,NASA_Exoplanet_Archive,"Super-Tierra/gigante a 0.767 AU (20 S), templado -> G4"
+55_Cancri_f,55 Cancri,Exoplaneta,0.144,Desconocida,5.767,0.05,Desconocida,No,Desconocida,1,2,3,X,BAJA,NASA_Exoplanet_Archive,"Sub-tierra lejana (0.05 S), fria, sin datos -> X2"
+Kepler_22b,Kepler-22,Exoplaneta,2.4,2.38,0.849,1.1,Desconocida,Especulativa,Desconocida,5,4,4,G,BAJA,NASA_Exoplanet_Archive,Mini-neptuno 2.38 R en HZ de G-type; gaseoso probable -> G. G4
+HD_85512b,HD 85512,Exoplaneta,3.6,1.5,0.26,5.0,Desconocida,Especulativa,Desconocida,6,3,3,X,BAJA,NASA_Exoplanet_Archive,Super-Tierra caliente (5 S) borde HZ K-dwarf; radio desconocido -> X4
+Gliese_163c,Gliese 163,Exoplaneta,7.0,1.7,0.325,3.0,Desconocida,Especulativa,Desconocida,5,3,3,X,BAJA,NASA_Exoplanet_Archive,Super-Tierra (3 S) HZ M-dwarf; radio incierto -> X (round=4)
+Kepler_62f,Kepler-62,Exoplaneta,1.195,1.32,0.713,0.41,Desconocida,Especulativa,Desconocida,5,4,4,A,BAJA,NASA_Exoplanet_Archive,"HZ exterior (0.41 S), probable agua/hielo superficie -> A; G-type estable. A4"
+Kepler_62e,Kepler-62,Exoplaneta,1.61,1.61,0.427,1.02,Desconocida,Especulativa,Desconocida,6,4,5,A,MEDIA,NASA_Exoplanet_Archive,"HZ interior (1.02 S) de K-dwarf tranquila, probable agua -> A; buen candidato. A5"
+Kepler_296f,Kepler-296,Exoplaneta,1.2,1.7,0.405,1.5,Desconocida,Especulativa,Desconocida,5,3,4,G,BAJA,NASA_Exoplanet_Archive,Mini-neptuno 1.7 R (1.5 S); gaseoso probable -> G4
+Kepler_442b,Kepler-442,Exoplaneta,1.2,1.61,0.409,1.04,Desconocida,Especulativa,Desconocida,6,4,5,A,MEDIA,NASA_Exoplanet_Archive,"Super-Tierra 1.04 S en HZ, uno de los mejores candidatos rocosos -> A; K/M tranquila. A5"
+Kepler_1649c,Kepler-1649,Exoplaneta,1.06,1.06,0.387,1.08,Desconocida,Especulativa,Desconocida,6,4,4,A,MEDIA,NASA_Exoplanet_Archive,Tierra-analogo (1.08 S) HZ de M -> A; tamano casi Tierra. A5 (CCE=4.67)
+HD_69830d,HD 69830,Exoplaneta,10.5,Desconocida,0.385,6.0,Desconocida,No,Desconocida,6,2,4,G,BAJA,NASA_Exoplanet_Archive,Sub-neptuno (6 S) HZ de K-type; gaseoso -> G4
+HD_40307e,HD 40307,Exoplaneta,13.18,Desconocida,1.21,0.22,Desconocida,No,Desconocida,3,2,4,X,BAJA,NASA_Exoplanet_Archive,"Sub-neptuno interior (0.22 S), radio desconocido -> X3"
+HD_40307f,HD 40307,Exoplaneta,9.2,Desconocida,1.60,0.10,Desconocida,No,Desconocida,2,2,4,X,BAJA,NASA_Exoplanet_Archive,"Sub-neptuno (0.10 S) frio, radio desconocido -> X (round=3)"
+Gliese_832c,Gliese 832,Exoplaneta,5.4,Desconocida,0.1637,3.0,Desconocida,Especulativa,Desconocida,5,3,3,X,BAJA,NASA_Exoplanet_Archive,Super-Tierra (3 S) HZ M-dwarf; radio desconocido -> X (round=4)
+Gliese_849b,Gliese 849,Exoplaneta,0.98,Desconocida,1.53,0.17,Desconocida,No,Desconocida,3,2,4,G,BAJA,NASA_Exoplanet_Archive,Joviano largo periodo (0.17 S) frio; gigante -> G3
+Ross_128b,Ross 128,Exoplaneta,1.35,Desconocida,0.0479,1.38,Desconocida,Posible,Desconocida,5,3,4,A,MEDIA,NASA_Exoplanet_Archive,Tierra-size (1.38 S) HZ de M tranquila (Ross 128 poco activa) -> A; buen candidato. A4
+Teegarden_b,Teegarden's Star,Exoplaneta,1.1,Desconocida,0.0251,0.88,Desconocida,Posible,Desconocida,5,4,4,A,MEDIA,NASA_Exoplanet_Archive,Tierra-size (0.88 S) HZ de M muy tranquila; alto ESI -> A. A4
+Teegarden_c,Teegarden's Star,Exoplaneta,1.1,Desconocida,0.0402,0.36,Desconocida,Posible,Desconocida,4,3,4,A,BAJA,NASA_Exoplanet_Archive,Tierra-size (0.36 S) HZ exterior de M -> A; mas frio. A4 (round=3.67)
+GJ_357b,GJ 357,Exoplaneta,3.1,Desconocida,0.1116,8.0,Desconocida,Posible,Desconocida,7,2,3,V,BAJA,NASA_Exoplanet_Archive,"Super-Tierra caliente (8 S), tipo lava/Venus; sin agua -> V4 (CCE=4)"
+GJ_357d,GJ 357,Exoplaneta,6.1,Desconocida,0.207,1.9,Desconocida,Especulativa,Desconocida,5,3,3,X,BAJA,NASA_Exoplanet_Archive,Super-Tierra (1.9 S) HZ exterior M; radio desconocido -> X (round=4)
+Epsilon_Indi_Ab,Epsilon Indi A,Exoplaneta,300,Desconocida,11.0,0.002,Desconocida,No,Desconocida,2,2,4,G,BAJA,NASA_Exoplanet_Archive,Enana marron/gigante (300 M) a 11 AU (0.002 S); frio -> G3 (CCE=2.67)
+Barnard_Star_b,Barnard's Star,Exoplaneta,3.2,Desconocida,0.40,1.6,Desconocida,Especulativa,Desconocida,4,2,3,X,BAJA,NASA_Exoplanet_Archive,Super-Tierra fria (1.6 S) M-dwarf; atmosfera especulativa -> X3
+Marte_historico,Solar,Planeta_extintoHistorico,0.107,0.532,1.52,590,H2O+CO2 denso,Si,Activo,7,6,5,A,MEDIA,modelo_paleoclimatico,Eon Noeachico (~3.8 Ga): agua superficial + atmosfera densa CO2/H2O -> A; antes de perder atmosfera. A6
+Venus_historico,Solar,Planeta_extintoHistorico,0.815,0.949,0.72,2600,N2/H2O vapor,Si,Activo,8,7,5,A,MEDIA,modelo_paleoclimatico,Archeo temprano: posibles oceanos de agua antes del runaway -> A; alta insolacion. A7 (CCE=6.67)
+Mercurio_historico,Solar,Planeta_extintoHistorico,0.055,0.383,0.39,9100,H2O+gases,Si,Activo,7,4,3,V,BAJA,modelo_paleoclimatico,Periodo magmatico temprano con H2O+gases y vulcanismo activo -> V; volatil pero energetico. V5 (CCE=4.67)
+Ganímedes_futuro,Júpiter,Satelite_futuro,0.025,0.413,0.00715,15,Especulativa,Si,Especulativa,6,6,6,O,BAJA,modelo_teorico,Modelo de mareas futuro; oceano interno sostenido -> O6
+Europa_futuro,Júpiter,Satelite_futuro,0.008,0.245,0.00428,50,Especulativa,Si,Especulativa,7,7,6,O,BAJA,modelo_teorico,"Modelo de mareas futuro, oceano interno mantenido -> O7"
+Titán_futuro,Saturno,Satelite_futuro,0.0225,0.403,0.01519,5,N2 futuro,Si,Especulativa,6,6,6,M,BAJA,modelo_teorico,Modelo climatico futuro (Sol mas brillante calienta Titan) -> M mejorado. M6
+Enceladus_futuro,Saturno,Satelite_futuro,0.0074,0.252,0.00238,0.3,Especulativa,Si,Especulativa,6,6,6,O,BAJA,modelo_teorico,Modelo orbital futuro con oceano activo -> O6
+Tierra_futuro,Solar,Planeta_futuro,1.0,1.0,1.0,1360,N2+O2 futuro,Si,Activo,8,8,7,A,MEDIA,modelo_teorico,"En 1-2 Ga, Sol mas brillante; aun habitable pero estresado -> A8 (CCE=7.67)"
+Venus_runaway,Solar,Planeta_hitoricoEscenario,0.815,0.949,0.72,2600,H2 escape,No,No,8,1,3,G,MEDIA,modelo_teorico,"Invernadero descontrolado, H2 escapando, esteril -> G4 (CCE=4)"
+Marte_futuro,Solar,Planeta_futuro,0.107,0.532,1.52,590,Especulativa,No,No,4,2,4,C,BAJA,modelo_teorico,Perdera atmosfera restante; mas frio y esteril -> C (round CCE=3.33)
+Neptuno_futuro,Solar,Planeta_futuro,17.1,3.88,30.1,1.5,Especulativa,No,No,4,2,5,G,BAJA,modelo_teorico,"Deriva orbital, similar al presente -> G4 (CCE=3.67)"
+Pluton_historico,Solar,Planetoide_historico,0.0021,0.696,39.5,0.05,N2+CH4 denso,Si,Criovulcanismo activo,4,4,4,V,BAJA,modelo_paleoclimatico,Primeros 100 Ma: N2+CH4 denso + criovulcanismo activo -> V; mas energetico que hoy. V4
+TRAPPIST-1b,TRAPPIST,exoplaneta,0.85,1.086,,,desconocida,desconocida,desconocido,10.0,3.0,8.5,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2016 (Transit)
+TRAPPIST-1c,TRAPPIST,exoplaneta,1.38,1.056,,,desconocida,desconocida,desconocido,8.54,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2016 (Transit)
+TRAPPIST-1d,TRAPPIST,exoplaneta,0.41,0.784,,,desconocida,desconocida,desconocido,7.6,3.0,4.1,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2016 (Transit)
+TRAPPIST-1e,TRAPPIST,exoplaneta,0.62,0.92,,,desconocida,desconocida,desconocido,8.54,3.0,6.2,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2016 (Transit)
+TRAPPIST-1f,TRAPPIST,exoplaneta,0.68,1.045,,,desconocida,desconocida,desconocido,7.57,3.0,6.8,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2016 (Transit)
+TRAPPIST-1g,TRAPPIST,exoplaneta,1.34,1.127,,,desconocida,desconocida,desconocido,7.12,3.0,10.0,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2016 (Transit)
+TRAPPIST-1h,TRAPPIST,exoplaneta,0.26,0.755,,,desconocida,desconocida,desconocido,5.59,3.0,2.6,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2016 (Transit)
+Proxima b,Proxima b,exoplaneta,1.27,1.27,,,desconocida,desconocida,desconocido,8.12,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2016 (Radial Velocity)
+Ross 128b,Ross 128b,exoplaneta,3.2,1.35,,,desconocida,desconocida,desconocido,9.34,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2017 (Radial Velocity)
+Tau Ceti e,Tau Ceti e,exoplaneta,4.3,1.95,,,desconocida,desconocida,desconocido,8.96,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2012 (Radial Velocity)
+Tau Ceti f,Tau Ceti f,exoplaneta,3.93,1.88,,,desconocida,desconocida,desconocido,9.17,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2012 (Radial Velocity)
+Kepler-442b,Kepler,exoplaneta,1.3,1.61,,,desconocida,desconocida,desconocido,9.2,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2015 (Transit)
+Kepler-186f,Kepler,exoplaneta,0,1.17,,,desconocida,desconocida,desconocido,9.79,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2014 (Transit)
+Kepler-62f,Kepler,exoplaneta,0,1.41,,,desconocida,desconocida,desconocido,8.51,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2013 (Transit)
+Kepler-62e,Kepler,exoplaneta,0,1.61,,,desconocida,desconocida,desconocido,9.97,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2013 (Transit)
+TOI-700d,TOI,exoplaneta,0,1.19,,,desconocida,desconocida,desconocido,9.65,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2020 (Transit)
+GJ 667C e,GJ 667C e,exoplaneta,2.67,1.49,,,desconocida,desconocida,desconocido,9.65,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2013 (Radial Velocity)
+GJ 667C f,GJ 667C f,exoplaneta,2.13,1.46,,,desconocida,desconocida,desconocido,8.06,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2013 (Radial Velocity)
+Teegarden c,Teegarden c,exoplaneta,0,1.2,,,desconocida,desconocida,desconocido,8.54,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2018 (Radial Velocity)
+Teegarden b,Teegarden b,exoplaneta,0,1.05,,,desconocida,desconocida,desconocido,9.79,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2018 (Radial Velocity)
+Barnard c,Barnard c,exoplaneta,3.2,0.99,,,desconocida,desconocida,desconocido,10.0,6.57,10.0,A,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2023 (Radial Velocity)
+Barnard b,Barnard b,exoplaneta,0,1.16,,,desconocida,desconocida,desconocido,4.31,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2018 (Radial Velocity)
+LHS 475b,LHS 475b,exoplaneta,0,1.25,,,desconocida,desconocida,desconocido,10.0,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2022 (Transit)
+K2-18b,K2,exoplaneta,8.63,2.6,,,desconocida,desconocida,desconocido,9.2,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2015 (Transit)
+K2-18c,K2,exoplaneta,0,1.5,,,desconocida,desconocida,desconocido,10.0,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2019 (Transit)
+HD 40307g,HD 40307g,exoplaneta,7.1,2.13,,,desconocida,desconocida,desconocido,8.09,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2012 (Radial Velocity)
+Epsilon Eridani b,Epsilon Eridani b,exoplaneta,0.35,0.73,,,desconocida,desconocida,desconocido,2.95,3.0,3.5,C,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2000 (Radial Velocity)
+Gliese 12b,Gliese 12b,exoplaneta,0,1.04,,,desconocida,desconocida,desconocido,10.0,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2023 (Transit)
+Wolf 1069b,Wolf 1069b,exoplaneta,0,1.05,,,desconocida,desconocida,desconocido,9.38,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2023 (Radial Velocity)
+Gliese 163c,Gliese 163c,exoplaneta,6.82,2.05,,,desconocida,desconocida,desconocido,7.4,3.0,10.0,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2012 (Radial Velocity)
+HD 85512b,HD 85512b,exoplaneta,3.6,2.1,,,desconocida,desconocida,desconocido,10.0,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2011 (Radial Velocity)
+Gliese 667C b,Gliese 667C b,exoplaneta,3.75,1.58,,,desconocida,desconocida,desconocido,10.0,3.0,10.0,G,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2012 (Radial Velocity)
+HD 215152b,HD 215152b,exoplaneta,0,2.0,,,desconocida,desconocida,desconocido,9.97,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2016 (Transit)
+GJ 357b,GJ 357b,exoplaneta,0,1.21,,,desconocida,desconocida,desconocido,10.0,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2019 (Radial Velocity)
+GJ 357d,GJ 357d,exoplaneta,0,1.75,,,desconocida,desconocida,desconocido,5.38,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2019 (Radial Velocity)
+L 98-59b,L 98,exoplaneta,0,1.27,,,desconocida,desconocida,desconocido,10.0,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2021 (Transit)
+L 98-59c,L 98,exoplaneta,0,1.26,,,desconocida,desconocida,desconocido,10.0,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2021 (Transit)
+L 98-59d,L 98,exoplaneta,0,1.46,,,desconocida,desconocida,desconocido,5.69,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2021 (Transit)
+HD 40307d,HD 40307d,exoplaneta,0,1.24,,,desconocida,desconocida,desconocido,10.0,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2012 (Radial Velocity)
+HD 40307e,HD 40307e,exoplaneta,0,1.44,,,desconocida,desconocida,desconocido,9.13,,,X,MEDIA,NASA Exoplanet Archive,Descubrimiento: 2012 (Radial Velocity)

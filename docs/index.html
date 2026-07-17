@@ -487,18 +487,77 @@ function setupGalFilters(){
 }
 // ---- Milky Way visualization ----
 let mw_zoom=2.5, mw_pan_x=0, mw_pan_y=0;
+function drawMilkyWayBackground(ctx, W, H, cx, cy){
+  // Fondo oscuro del espacio
+  ctx.fillStyle='#0a0e1a';
+  ctx.fillRect(0,0,W,H);
+
+  // Estrellas de fondo (procedurales)
+  const seed = 42;
+  for(let i=0; i<200; i++){
+    const angle = (i*137.5*Math.PI/180) % (2*Math.PI);
+    const dist = (i*i*0.3) % 400;
+    const x = cx + dist*Math.cos(angle);
+    const y = cy + dist*Math.sin(angle);
+    const brightness = (Math.sin(i*3.7)*0.5+0.5);
+    ctx.fillStyle='rgba(200,220,255,'+brightness*0.3+')';
+    ctx.beginPath();
+    ctx.arc(x, y, 0.5+(brightness*1), 0, 7);
+    ctx.fill();
+  }
+
+  // Galaxia espiral realista (5 brazos como la Vía Láctea)
+  for(let arm=0; arm<5; arm++){
+    const armAngle = arm*Math.PI*2/5 + 0.3;
+    for(let t=0; t<60; t+=0.3){
+      const angle = t*0.15 + armAngle;
+      const r = t*8 * mw_zoom;
+      const width = 15 + t*0.5;
+
+      // Gradiente de brazo
+      const grad = ctx.createRadialGradient(cx,cy,0,cx,cy,r+100);
+      grad.addColorStop(0, 'rgba(70,90,150,0)');
+      grad.addColorStop(0.5, 'rgba(100,140,200,0.3)');
+      grad.addColorStop(1, 'rgba(40,60,120,0)');
+      ctx.fillStyle=grad;
+
+      const x = cx + r*Math.cos(angle);
+      const y = cy + r*Math.sin(angle);
+      ctx.beginPath();
+      ctx.arc(x, y, width*mw_zoom, 0, 7);
+      ctx.fill();
+    }
+  }
+
+  // Polvo (rojo/marrón)
+  for(let i=0; i<80; i++){
+    const angle = (i*71*Math.PI/180) % (2*Math.PI);
+    const dist = (i*i*0.7) % 300;
+    const x = cx + dist*Math.cos(angle);
+    const y = cy + dist*Math.sin(angle);
+    const opacity = (Math.sin(i*2.3)*0.5+0.5)*0.2;
+    ctx.fillStyle='rgba(200,100,80,'+opacity+')';
+    ctx.beginPath();
+    ctx.arc(x, y, 2+(opacity*3), 0, 7);
+    ctx.fill();
+  }
+
+  // Centro brillante (bulge)
+  const bulge = ctx.createRadialGradient(cx,cy,0,cx,cy,80);
+  bulge.addColorStop(0, 'rgba(255,220,150,0.6)');
+  bulge.addColorStop(0.5, 'rgba(200,160,100,0.3)');
+  bulge.addColorStop(1, 'rgba(100,80,60,0)');
+  ctx.fillStyle=bulge;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 80*mw_zoom, 0, 7);
+  ctx.fill();
+}
+
 function drawMilkyWay(){
   const canvas=document.getElementById('mw-canvas'), tip=document.getElementById('mw-tip');
   const dpr=Math.min(window.devicePixelRatio||1,2), W=canvas.clientWidth, H=700;
   canvas.width=W*dpr; canvas.height=H*dpr; canvas.style.height=H+'px';
   const ctx=canvas.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
-
-  // Fondo con gradiente
-  const grad=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)/2);
-  grad.addColorStop(0, cssv('--ground')+'');
-  grad.addColorStop(1, cssv('--grid')+'22');
-  ctx.fillStyle=grad;
-  ctx.fillRect(0,0,W,H);
 
   // Escala: 50 ly visible = 200px (escala local)
   const SCALE = 200 / 50;
@@ -507,37 +566,29 @@ function drawMilkyWay(){
   const cx = W/2 - mw_pan_x;
   const cy = H/2 - mw_pan_y;
 
-  // Galaxia espiral de fondo (subtil)
-  ctx.strokeStyle=cssv('--muted'); ctx.globalAlpha=0.15; ctx.lineWidth=0.5;
-  for(let arm=0; arm<4; arm++){
-    ctx.beginPath();
-    for(let t=0; t<80; t+=0.5){
-      const angle = t*0.1 + arm*Math.PI/2;
-      const r = t*3 * mw_zoom;
-      const x = cx + r*Math.cos(angle);
-      const y = cy + r*Math.sin(angle);
-      if(t===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-  }
-  ctx.globalAlpha=1;
+  // Dibujar fondo de galaxia
+  drawMilkyWayBackground(ctx, W, H, cx, cy);
 
   // Centro galáctico (Sgr A*)
-  ctx.fillStyle=cssv('--accent'); ctx.globalAlpha=0.9;
-  ctx.beginPath(); ctx.arc(cx, cy, 12*mw_zoom, 0, 7); ctx.fill();
-  ctx.fillStyle=cssv('--ground'); ctx.font='bold 10px system-ui';
-  ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText('Sgr A*', cx, cy+18);
+  ctx.fillStyle='#ffdd00'; ctx.globalAlpha=0.95;
+  ctx.beginPath(); ctx.arc(cx, cy, 14*mw_zoom, 0, 7); ctx.fill();
+  ctx.globalAlpha=0.7;
+  ctx.beginPath(); ctx.arc(cx, cy, 20*mw_zoom, 0, 7); ctx.stroke();
+  ctx.globalAlpha=1;
+
+  ctx.fillStyle='#fff'; ctx.font='bold 11px system-ui';
+  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.globalAlpha=0.8;
+  ctx.fillText('Sgr A*', cx, cy+22);
   ctx.globalAlpha=1;
 
   // Sol (con etiqueta)
   const sol_x = cx - 26670*SCALE*mw_zoom;
   const sol_y = cy;
-  ctx.fillStyle=cssv('--accent'); ctx.globalAlpha=0.7;
-  ctx.beginPath(); ctx.arc(sol_x, sol_y, 6*mw_zoom, 0, 7); ctx.fill();
-  ctx.fillStyle=cssv('--ink'); ctx.font='600 9px system-ui';
-  ctx.textAlign='left'; ctx.textBaseline='middle';
-  ctx.fillText('Sol', sol_x-12, sol_y+12);
+  ctx.fillStyle='#ffdd00'; ctx.globalAlpha=0.8;
+  ctx.beginPath(); ctx.arc(sol_x, sol_y, 8*mw_zoom, 0, 7); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.font='600 10px system-ui';
+  ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.globalAlpha=0.8;
+  ctx.fillText('Sol', sol_x-14, sol_y+14);
   ctx.globalAlpha=1;
 
   // Cuerpos del dataset (VISIBLES)
@@ -549,22 +600,23 @@ function drawMilkyWay(){
       const dist_px = host.dist*SCALE*mw_zoom;
       const x = cx + dist_px*Math.cos(angle);
       const y = cy + dist_px*Math.sin(angle);
-      const r = 4 + b.CCE*1.2; // Más grande
+      const r = 5 + b.CCE*1.3;
 
       ctx.beginPath(); ctx.arc(x, y, r*mw_zoom, 0, 7);
       ctx.fillStyle=cssv(FAM[b.familia])+(b.confianza==='BAJA'?'99':'');
-      ctx.globalAlpha=b.confianza==='BAJA'?0.65:0.9;
+      ctx.globalAlpha=b.confianza==='BAJA'?0.7:0.95;
       ctx.fill();
       ctx.globalAlpha=1;
-      ctx.lineWidth=1.5; ctx.strokeStyle=cssv('--panel'); ctx.stroke();
+      ctx.lineWidth=2; ctx.strokeStyle='#fff'; ctx.globalAlpha=0.6; ctx.stroke();
+      ctx.globalAlpha=1;
 
       hit.push({x,y,r:Math.max(r*mw_zoom+3,8),b});
     }
   });
 
-  // Etiquetas de sistemas principales (más legibles)
-  ctx.fillStyle=cssv('--ink'); ctx.font='600 11px system-ui'; ctx.textAlign='left'; ctx.textBaseline='middle';
-  ctx.globalAlpha=0.9;
+  // Etiquetas de sistemas principales
+  ctx.fillStyle='#fff'; ctx.font='600 10px system-ui'; ctx.textAlign='left';
+  ctx.textBaseline='middle'; ctx.globalAlpha=0.85;
   DATA.hosts.slice(0,10).forEach(h=>{
     if(h.dist>0){
       const angle = h.ra*Math.PI/180;

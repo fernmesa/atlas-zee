@@ -65,6 +65,7 @@ tr:hover td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
     <button class="tab" role="tab" aria-selected="false" data-view="stars">Estrellas anfitrionas</button>
     <button class="tab" role="tab" aria-selected="false" data-view="map">Mapa del vecindario</button>
     <button class="tab" role="tab" aria-selected="false" data-view="gal">Mapa galáctico</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="galmap">Familias galácticas</button>
   </div>
 
   <div id="view-ecr" class="card">
@@ -128,7 +129,7 @@ const off = new Set();
 // tabs
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected', x===t));
-  ['ecr','dist','stars','map','gal'].forEach(v=>document.getElementById('view-'+v).classList.toggle('hide', v!==t.dataset.view));
+  ['ecr','dist','stars','map','gal','galmap'].forEach(v=>document.getElementById('view-'+v).classList.toggle('hide', v!==t.dataset.view));
   draw();
 });
 
@@ -326,59 +327,63 @@ function drawGal(){
     }else tip.style.opacity=0;};
   canvas.onmouseleave=()=>tip.style.opacity=0;
 }
-// ---- mapa galactico interactivo (EN DESARROLLO) ----
-/*
+// ---- mapa galactico interactivo ----
 function drawGalMap(){
   const canvas=document.getElementById('c5'), tip=document.getElementById('t5');
   if(!canvas) return;
   const W=canvas.width, H=canvas.height;
   const ctx=canvas.getContext('2d');ctx.clearRect(0,0,W,H);
-  const cx=W*0.5, cy=H*0.5, scale=4; // 1 ly = 4 px, zoom ×10 en vecindario
+  const cx=W*0.5, cy=H*0.5, scale=0.008; // escala: 1 ly = 0.008 px
 
-  // fondo
-  const grad=ctx.createRadialGradient(cx,cy,0,cx,cy,250);
-  grad.addColorStop(0,'#0f0020'); grad.addColorStop(1,'#000000');
+  // fondo degradado (espacio)
+  const grad=ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H));
+  grad.addColorStop(0,'#1a0033'); grad.addColorStop(0.3,'#0b0015'); grad.addColorStop(1,'#000000');
   ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
 
-  // anillos (10, 20, 30 ly)
-  ctx.globalAlpha=0.25; ctx.strokeStyle=cssv('--grid'); ctx.lineWidth=1; ctx.setLineDash([2,2]);
-  for(let d of [10,20,30,40]){
-    ctx.beginPath();ctx.arc(cx,cy,d*scale,0,7);ctx.stroke();
+  // brazos espirales procedurales (4 brazos)
+  ctx.globalAlpha=0.15; ctx.strokeStyle=cssv('--accent'); ctx.lineWidth=2;
+  for(let arm=0;arm<4;arm++){
+    ctx.beginPath();
+    for(let r=0;r<30000;r+=100){
+      const angle=arm*Math.PI/2 + r*0.0003; // pitch angle
+      const x=cx+r*scale*Math.cos(angle);
+      const y=cy+r*scale*Math.sin(angle);
+      if(r===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
   }
-  ctx.setLineDash([]);ctx.globalAlpha=1;
+  ctx.globalAlpha=1;
 
-  // Sol
-  ctx.beginPath();ctx.arc(cx,cy,5,0,7);ctx.fillStyle='#FFD700';ctx.fill();
-  ctx.strokeStyle=cssv('--accent');ctx.lineWidth=1;ctx.stroke();
-  ctx.fillStyle=cssv('--ink');ctx.font='bold 11px system-ui';ctx.textAlign='center';ctx.fillText('Sol',cx,cy+20);
+  // centro galactico
+  ctx.beginPath();ctx.arc(cx,cy,5,0,7);ctx.fillStyle=cssv('--accent');ctx.fill();
 
-  // sistemas
+  // dibuja los cuerpos
   const visible=[];
   DATA.hosts.forEach(h=>{
     if(!gal_filters.has(h.fam)) return;
-    const g=galcart(h);
-    const dx=g.X-R0, dy=g.Y;
+    const g=galcart(h), dx=g.X-R0, dy=g.Y;
     const x=cx+dx*scale, y=cy-dy*scale;
-    const r=4+h.idx*0.5;
+    if(x<0||x>W||y<0||y>H) return; // fuera del mapa
+    const r=2.5+h.idx*0.3;
     ctx.beginPath();ctx.arc(x,y,r,0,7);
     ctx.fillStyle=cssv(FAM[h.fam]);ctx.fill();
-    ctx.lineWidth=2;ctx.strokeStyle=cssv('--panel');ctx.stroke();
-    visible.push({x,y,r:r+4,h});
+    ctx.lineWidth=1.5;ctx.strokeStyle=cssv('--panel');ctx.stroke();
+    visible.push({x,y,r:r+3,h,fam:h.fam});
   });
 
   // info
   ctx.fillStyle=cssv('--muted');ctx.font='11px system-ui';ctx.textAlign='left';
-  ctx.fillText('Vecindario solar: '+visible.length+' sistemas anfitriones · radio 50 ly',12,18);
+  ctx.fillText('Vía Láctea: '+visible.length+' sistemas · color = familia ZEE',12,18);
 
+  // tooltip
   canvas.onmousemove=e=>{const rc=canvas.getBoundingClientRect(),mx=e.clientX-rc.left,my=e.clientY-rc.top;
     let f=null;for(const t of visible){if((mx-t.x)**2+(my-t.y)**2<=t.r*t.r){f=t;break;}}
     if(f){tip.style.opacity=1;tip.style.left=f.x+'px';tip.style.top=f.y+'px';
-      tip.innerHTML='<b>'+f.h.sistema+'</b><br>'+f.h.code+' ('+f.h.fam+')<br>'+f.h.dist.toFixed(1)+' ly';
+      tip.innerHTML='<b>'+f.h.sistema+'</b><br>'+f.h.code+' ('+f.fam+')<br>'+f.h.dist.toFixed(1)+' ly del Sol';
     }else tip.style.opacity=0;};
   canvas.onmouseleave=()=>tip.style.opacity=0;
 }
-*/
-/*
+const gal_filters=new Set(['A','M','O','V','C','G','X']);
 function setupGalFilters(){
   const cont=document.getElementById('gal-filters');if(!cont) return;
   cont.innerHTML='';
@@ -393,7 +398,6 @@ function setupGalFilters(){
     cont.appendChild(lbl);
   });
 }
-*/
 function draw(){
   const v=document.querySelector('.tab[aria-selected="true"]').dataset.view;
   if(v==='ecr'){legend(document.getElementById('leg1'),drawECR);drawECR();}
@@ -401,6 +405,7 @@ function draw(){
   if(v==='stars'){drawStars();}
   if(v==='map'){legend(document.getElementById('leg3'),drawMap);drawMap();}
   if(v==='gal'){legend(document.getElementById('leg4'),drawGal);drawGal();}
+  if(v==='galmap'){setupGalFilters();drawGalMap();}
 }
 draw();
 new ResizeObserver(()=>draw()).observe(document.querySelector('.inner'));

@@ -399,9 +399,10 @@ function draw(){
   if(v==='stars'){drawStars();}
   if(v==='map'){legend(document.getElementById('leg3'),drawMap);drawMap();}
   if(v==='gal'){legend(document.getElementById('leg4'),drawGal);drawGal();}
-  if(v==='galmap'){setupGalFilters();drawGalMap();}
+  if(v==='galmap'){drawGalMap();}
 }
 draw();
+setupGalFilters(); // una sola vez al cargar
 new ResizeObserver(()=>draw()).observe(document.querySelector('.inner'));
 matchMedia('(prefers-color-scheme:dark)').addEventListener('change',draw);
 const mo=new MutationObserver(draw);mo.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});

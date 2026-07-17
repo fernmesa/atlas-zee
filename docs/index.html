@@ -326,7 +326,8 @@ function drawGal(){
     }else tip.style.opacity=0;};
   canvas.onmouseleave=()=>tip.style.opacity=0;
 }
-// ---- mapa galactico interactivo ----
+// ---- mapa galactico interactivo (EN DESARROLLO) ----
+/*
 function drawGalMap(){
   const canvas=document.getElementById('c5'), tip=document.getElementById('t5');
   if(!canvas) return;
@@ -376,7 +377,9 @@ function drawGalMap(){
     }else tip.style.opacity=0;};
   canvas.onmouseleave=()=>tip.style.opacity=0;
 }
-const gal_filters=new Set(['A','M','O','V','C','G','X']);
+*/
+const gal_filters=new Set(['A','M','O','V','C','G','X']); // EN DESARROLLO
+/*
 function setupGalFilters(){
   const cont=document.getElementById('gal-filters');if(!cont) return;
   cont.innerHTML='';
@@ -391,6 +394,7 @@ function setupGalFilters(){
     cont.appendChild(lbl);
   });
 }
+*/
 function draw(){
   const v=document.querySelector('.tab[aria-selected="true"]').dataset.view;
   if(v==='ecr'){legend(document.getElementById('leg1'),drawECR);drawECR();}

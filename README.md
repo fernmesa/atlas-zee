@@ -48,18 +48,33 @@ por nombre en la config. Añadir una capa = crear un archivo en `layers/`. **No 
 
 ## Clonar y ejecutar
 
-Sin dependencias externas. Solo Python 3.8+ y git.
+**Requisitos:** Python 3.8+, git. Sin dependencias externas.
 
 ```bash
-# con GitHub CLI
+# Opción 1: con GitHub CLI (recomendado si lo tienes)
 gh repo clone fernmesa/atlas-zee
-# o con git normal
-git clone https://github.com/fernmesa/atlas-zee.git
-
 cd atlas-zee
-python tests/test_controls.py         # debe decir: los 8 controles pasan
-python run.py                         # clasifica los 90 cuerpos curados
+
+# Opción 2: con git estándar
+git clone https://github.com/fernmesa/atlas-zee.git
+cd atlas-zee
 ```
+
+### Verificar la instalación
+
+```bash
+python tests/test_controls.py         # verifica que el núcleo funciona (8 controles)
+```
+
+Debe decir: **los 8 controles pasan**. Si falla, reporta el error en Issues.
+
+### Ejecutar la clasificación
+
+```bash
+python run.py                         # clasifica con config por defecto
+```
+
+Salida: `salida_clasificacion.csv` con todos los cuerpos y sus índices.
 
 ## Uso rápido
 
@@ -172,24 +187,52 @@ atlas/
 
 ## Desplegar el visor web
 
-`docs/index.html` es una página estática autocontenida (sin dependencias). Opciones:
+El visor interactivo (`docs/atlas_visual.html`) es una página estática pura — sin servidor,
+sin dependencias. Corre en el navegador con los datos incrustados.
 
-- **Cloudflare Pages** *(recomendado, ya usas Cloudflare)* — conecta el repo, sin build,
-  directorio de salida `docs/`. Funciona con repos privados en el plan gratuito.
-- **GitHub Pages** — gratis, pero con repo privado requiere plan de pago; con repo público
-  es un clic (Settings → Pages → carpeta `/docs`).
-- **Netlify / Vercel** — también sirven estáticos desde `docs/` sin configuración.
+### Opciones de despliegue
 
-Para servirlo en local:
+| Plataforma | Costo | Público/Privado | Configuración |
+|------------|-------|-----------------|---------------|
+| **Cloudflare Pages** | Gratis | Ambos | Conectar repo, output dir `/docs` |
+| **GitHub Pages** | Gratis | Solo público | Settings → Pages → `/docs` branch main |
+| **Netlify / Vercel** | Gratis | Ambos | Deploy desde `/docs`, sin build |
+
+El repo es **privado** — GitHub Pages requeriría plan de pago para ello, pero **Cloudflare Pages**
+funciona gratis incluso para repos privados. Recomendado.
+
+### Servir en local (desarrollo)
 
 ```bash
-python -m http.server -d docs 8000    # abre http://localhost:8000
+python -m http.server -d docs 8000
+# abre http://localhost:8000/atlas_visual.html
 ```
+
+## Contribuir
+
+El repo usa **rama `main` protegida**: todo cambio pasa por Pull Request (PR). No hay push directo.
+
+```bash
+# Tu flujo
+git checkout -b tu-rama
+# ...haz cambios, tests, commits...
+git push origin tu-rama
+# Abre un PR en GitHub (gh pr create)
+```
+
+Ver `CONTRIBUTING.md` para estándares de código.
 
 ## Estado y hoja de ruta
 
-- **v0.2 (esto)** — núcleo modular, capas intercambiables, filtro de datos, 90 cuerpos.
-- **Siguiente** — importar catálogos reales (NASA Exoplanet Archive), trayectorias
-  temporales ±1 Ga, visor web y mapa galáctico. Ver `CONTRIBUTING.md`.
+- **v0.2 (esto)** — núcleo modular, capas intercambiables, 90 cuerpos curados, 4 esquemas.
+  Visor web con 4 vistas (E-C, orbital, vecindario, galactocéntrico). Importador NASA,
+  generador de solicitudes de observación. 8 controles calibrados.
+- **v0.3** — trayectorias temporales ±1 Ga (simulación de evolución estelar).
+  Integración con catálogos de exoplanetas (~5900 confirmados). Deduplicación automática.
+- **v1.0** — publicación peer-reviewed, API abierta, dashboard colaborativo vía PR.
 
-Cita: *ATLAS v0.2 (2026), CC-BY-4.0.*
+Ver `CONTRIBUTING.md` para cómo proponer nuevas capas o mejoras al modelo.
+
+---
+
+Cita: *ATLAS v0.2 (2026), CC-BY-4.0. Motor abierto de clasificación de Zonas de Estabilidad Ecosistémica.*

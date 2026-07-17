@@ -1,6 +1,14 @@
-* text=auto eol=lf
-*.csv text eol=lf
-*.md text eol=lf
+# normaliza finales de linea a LF en el repo (independiente del SO del desarrollador)
+* text=auto
 *.py text eol=lf
+*.js text eol=lf
 *.json text eol=lf
+*.md text eol=lf
+*.csv text eol=lf
+*.sh text eol=lf
 *.html text eol=lf
+
+# binarios
+*.pyc binary
+__pycache__ export-ignore
+.pytest_cache export-ignore

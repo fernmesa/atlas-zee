@@ -344,27 +344,21 @@ function drawGalMap(){
   // dibuja los cuerpos
   const visible=[];
   DATA.hosts.forEach(h=>{
-    if(!gal_filters.has(h.fam)) return;
+    if(!gal_filters.has(h.familia)) return;
     const g=galcart(h), dx=g.X-R0, dy=g.Y;
-    const x=cx+dx*scale*0.01, y=cy-dy*scale*0.01; // escala reducida para visualizar
-    if(x<0||x>W||y<0||y>H) return;
+    const x=cx+dx*scale*0.01, y=cy-dy*scale*0.01;
     const r=3+h.idx*0.5;
     ctx.beginPath();ctx.arc(x,y,r,0,7);
-    ctx.fillStyle=cssv(FAM[h.fam]);ctx.fill();
+    ctx.fillStyle=cssv(FAM[h.familia]);ctx.fill();
     ctx.lineWidth=1;ctx.strokeStyle=cssv('--panel');ctx.stroke();
-    visible.push({x,y,r:r+4,h,fam:h.fam});
+    visible.push({x,y,r:r+4,h,fam:h.familia});
   });
-  // leyenda
   ctx.fillStyle=cssv('--muted');ctx.font='11px system-ui';ctx.textAlign='left';
-  ctx.fillText('Centro galáctico (origen) · color = familia',12,18);
-  ctx.fillStyle=cssv('--muted');ctx.font='10px system-ui';
-  ctx.fillText(visible.length+' cuerpos visibles',12,32);
-  // tooltip
+  ctx.fillText('Centro galáctico · '+visible.length+' cuerpos visibles',12,18);
   canvas.onmousemove=e=>{const rc=canvas.getBoundingClientRect(),mx=e.clientX-rc.left,my=e.clientY-rc.top;
     let f=null;for(const t of visible){if((mx-t.x)**2+(my-t.y)**2<=t.r*t.r){f=t;break;}}
     if(f){tip.style.opacity=1;tip.style.left=f.x+'px';tip.style.top=f.y+'px';
-      const Rgc=Math.sqrt((f.h.dist*1000)**2);
-      tip.innerHTML='<b>'+f.h.sistema+'</b><br>'+f.h.code+' ('+f.fam+')<br>~'+f.h.dist.toFixed(1)+' ly del Sol';
+      tip.innerHTML='<b>'+f.h.disp+'</b><br>'+f.h.codigo+' ('+f.fam+')<br>'+f.h.sistema;
     }else tip.style.opacity=0;};
   canvas.onmouseleave=()=>tip.style.opacity=0;
 }
@@ -378,8 +372,8 @@ function setupGalFilters(){
     lbl.style.cssText='display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;padding:4px 8px;border-radius:6px;font-size:13px';
     const chk=document.createElement('input');chk.type='checkbox';chk.checked=true;
     chk.onchange=()=>{if(chk.checked){gal_filters.add(fam);}else{gal_filters.delete(fam);}drawGalMap();};
-    const dot=document.createElement('div');dot.style.cssText='width:10px;height:10px;border-radius:50%;background:'+getComputedStyle(document.documentElement).getPropertyValue(FAM[fam]).trim();
-    lbl.appendChild(chk);lbl.appendChild(dot);lbl.appendChild(document.createTextNode(famName+' ('+DATA.hosts.filter(h=>h.fam===fam).length+')'));
+    const dot=document.createElement('div');dot.style.cssText='width:10px;height:10px;border-radius:50%;background:'+cssv(FAM[fam]);
+    lbl.appendChild(chk);lbl.appendChild(dot);lbl.appendChild(document.createTextNode(famName+' ('+DATA.bodies.filter(h=>h.familia===fam).length+')'));
     cont.appendChild(lbl);
   });
 }

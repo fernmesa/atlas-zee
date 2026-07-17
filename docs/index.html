@@ -65,7 +65,6 @@ tr:hover td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
     <button class="tab" role="tab" aria-selected="false" data-view="stars">Estrellas anfitrionas</button>
     <button class="tab" role="tab" aria-selected="false" data-view="map">Mapa del vecindario</button>
     <button class="tab" role="tab" aria-selected="false" data-view="gal">Mapa galáctico</button>
-    <button class="tab" role="tab" aria-selected="false" data-view="galmap">Familias galácticas</button>
   </div>
 
   <div id="view-ecr" class="card">
@@ -129,7 +128,7 @@ const off = new Set();
 // tabs
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected', x===t));
-  ['ecr','dist','stars','map','gal','galmap'].forEach(v=>document.getElementById('view-'+v).classList.toggle('hide', v!==t.dataset.view));
+  ['ecr','dist','stars','map','gal'].forEach(v=>document.getElementById('view-'+v).classList.toggle('hide', v!==t.dataset.view));
   draw();
 });
 

@@ -378,7 +378,6 @@ function drawGalMap(){
   canvas.onmouseleave=()=>tip.style.opacity=0;
 }
 */
-const gal_filters=new Set(['A','M','O','V','C','G','X']); // EN DESARROLLO
 /*
 function setupGalFilters(){
   const cont=document.getElementById('gal-filters');if(!cont) return;
@@ -402,7 +401,6 @@ function draw(){
   if(v==='stars'){drawStars();}
   if(v==='map'){legend(document.getElementById('leg3'),drawMap);drawMap();}
   if(v==='gal'){legend(document.getElementById('leg4'),drawGal);drawGal();}
-  if(v==='galmap'){drawGalMap();}
 }
 draw();
 new ResizeObserver(()=>draw()).observe(document.querySelector('.inner'));

@@ -55,9 +55,19 @@ tr:hover td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
 </style>
 
 <div class="wrap"><div class="inner">
-  <div class="eyebrow">ATLAS v0.1 · 78 cuerpos · 38 sistemas</div>
+  <div class="eyebrow">ATLAS v0.2 · Expandible y colaborativo</div>
   <h1>Atlas visual de Zonas de Estabilidad Ecosistémica</h1>
   <p class="sub">Cada mundo situado por su química (C), su energía (E) y su posición real alrededor de su estrella. Las estrellas se puntúan por las ZEE que hospedan — un índice para priorizar dónde mirar.</p>
+
+  <div style="background:var(--panel);border:1px solid var(--hair);border-radius:8px;padding:12px 14px;margin-bottom:18px;font-size:13px">
+    <label style="display:flex;align-items:center;gap:8px"><strong>Dataset:</strong>
+      <select id="dataset-select" style="padding:5px 8px;border:1px solid var(--hair);border-radius:4px;background:var(--ground);color:var(--ink);cursor:pointer">
+        <option value="curated">Curado (90 cuerpos)</option>
+        <option value="expanded" selected>Expandido (130 cuerpos + NASA)</option>
+      </select>
+    </label>
+    <p style="margin:6px 0 0;color:var(--muted)">El dataset expandido integra 40 exoplanetas confirmados de NASA. Patrones estadísticos más robustos.</p>
+  </div>
 
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-view="ecr">Espacio E · C</button>

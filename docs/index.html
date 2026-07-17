@@ -76,6 +76,7 @@ tr:hover td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
     <button class="tab" role="tab" aria-selected="false" data-view="map">Mapa del vecindario</button>
     <button class="tab" role="tab" aria-selected="false" data-view="gal">Mapa galáctico</button>
     <button class="tab" role="tab" aria-selected="false" data-view="galmap">Familias galácticas</button>
+    <button class="tab" role="tab" aria-selected="false" data-view="milkyway">Milky Way</button>
   </div>
 
   <div id="view-ecr" class="card">
@@ -127,6 +128,17 @@ tr:hover td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
     </tr></thead><tbody></tbody></table></div>
     <p class="foot">N·ZEE = cuerpos con CCE ≥ 5.5 (dentro de zona). Los sistemas Solar/Júpiter/Saturno agrupan sus lunas.</p>
   </div>
+
+  <div id="view-milkyway" class="card hide">
+    <h2>La Vía Láctea — posiciones de los cuerpos clasificados</h2>
+    <p class="note">Visualización de nuestra galaxia con los cuerpos del dataset superpuestos según su posición galáctica real. Color = familia ZEE. El punto brillante al centro es Sgr A* (agujero negro central). Zoom: rueda del ratón · Mover: arrastrar.</p>
+    <div style="margin-bottom:12px">
+      <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Familias visibles:</label>
+      <div id="mw-filters" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+    </div>
+    <div class="canvas-wrap"><canvas id="mw-canvas" width="1000" height="700"></canvas><div class="tip" id="mw-tip"></div></div>
+    <p class="foot">Escala galactocéntrica: ~100,000 años luz de diámetro. Los datos se proyectan en coordenadas cartesianas X-Y (visto de cara). Zoom y panning interactivo.</p>
+  </div>
 </div></div>
 
 <script>
@@ -139,7 +151,7 @@ const off = new Set();
 // tabs
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected', x===t));
-  ['ecr','dist','stars','map','gal','galmap'].forEach(v=>document.getElementById('view-'+v).classList.toggle('hide', v!==t.dataset.view));
+  ['ecr','dist','stars','map','gal','galmap','milkyway'].forEach(v=>document.getElementById('view-'+v).classList.toggle('hide', v!==t.dataset.view));
   draw();
 });
 
@@ -473,6 +485,116 @@ function setupGalFilters(){
     cont.appendChild(lbl);
   });
 }
+// ---- Milky Way visualization ----
+let mw_zoom=1, mw_pan_x=0, mw_pan_y=0;
+function drawMilkyWay(){
+  const canvas=document.getElementById('mw-canvas'), tip=document.getElementById('mw-tip');
+  const dpr=Math.min(window.devicePixelRatio||1,2), W=canvas.clientWidth, H=700;
+  canvas.width=W*dpr; canvas.height=H*dpr; canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+
+  // Dibujar galaxia espiral
+  ctx.fillStyle=cssv('--grid'); ctx.globalAlpha=0.15;
+  ctx.beginPath(); ctx.arc(W/2, H/2, 45000*mw_zoom/100000, 0, 7); ctx.fill();
+  ctx.globalAlpha=1;
+
+  // Espirales (brazos de la galaxia)
+  ctx.strokeStyle=cssv('--grid'); ctx.globalAlpha=0.3; ctx.lineWidth=1;
+  for(let arm=0; arm<4; arm++){
+    ctx.beginPath();
+    for(let t=0; t<50; t+=0.1){
+      const angle = t + arm*Math.PI/2;
+      const r = t*800 * mw_zoom;
+      const x = W/2 + r*Math.cos(angle) - mw_pan_x;
+      const y = H/2 + r*Math.sin(angle) - mw_pan_y;
+      if(t===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+  }
+  ctx.globalAlpha=1;
+
+  // Centro galáctico
+  ctx.fillStyle=cssv('--accent'); ctx.globalAlpha=0.8;
+  ctx.beginPath(); ctx.arc(W/2 - mw_pan_x, H/2 - mw_pan_y, 8*mw_zoom, 0, 7); ctx.fill();
+  ctx.globalAlpha=1;
+
+  // Sol
+  ctx.fillStyle=cssv('--accent'); ctx.globalAlpha=0.5;
+  ctx.beginPath(); ctx.arc(W/2 - mw_pan_x + (26670*mw_zoom/100000), H/2 - mw_pan_y, 4*mw_zoom, 0, 7); ctx.fill();
+  ctx.globalAlpha=1;
+
+  // Cuerpos del dataset
+  const hit=[];
+  DATA.bodies.filter(b=>!off.has(b.familia)).forEach(b=>{
+    // Simular posición galáctica (usar datos de hosts cuando disponible)
+    const host=DATA.hosts.find(h=>h.sistema===b.sistema);
+    if(host){
+      const x = W/2 + (host.dist*800*mw_zoom/100000)*Math.cos(host.ra*Math.PI/180) - mw_pan_x;
+      const y = H/2 + (host.dist*800*mw_zoom/100000)*Math.sin(host.ra*Math.PI/180) - mw_pan_y;
+      const r = 3 + b.CCE*0.8;
+
+      ctx.beginPath(); ctx.arc(x, y, r*mw_zoom, 0, 7);
+      ctx.fillStyle=cssv(FAM[b.familia])+(b.confianza==='BAJA'?'99':'');
+      ctx.globalAlpha=b.confianza==='BAJA'?0.6:0.85;
+      ctx.fill();
+      ctx.globalAlpha=1;
+      ctx.lineWidth=1;ctx.strokeStyle=cssv('--panel');ctx.stroke();
+
+      hit.push({x,y,r:Math.max(r*mw_zoom+2,6),b});
+    }
+  });
+
+  // Etiquetas de sistemas principales
+  ctx.fillStyle=cssv('--ink'); ctx.font='600 10px system-ui'; ctx.textAlign='left'; ctx.textBaseline='middle';
+  DATA.hosts.slice(0,8).forEach(h=>{
+    if(h.dist>0){
+      const x = W/2 + (h.dist*800*mw_zoom/100000)*Math.cos(h.ra*Math.PI/180) - mw_pan_x;
+      const y = H/2 + (h.dist*800*mw_zoom/100000)*Math.sin(h.ra*Math.PI/180) - mw_pan_y;
+      ctx.fillText(h.sistema, x+5, y);
+    }
+  });
+
+  // Interactividad
+  canvas.onmousemove=e=>{
+    const rc=canvas.getBoundingClientRect(), mx=e.clientX-rc.left, my=e.clientY-rc.top;
+    let found=null;
+    for(const h of hit){if((mx-h.x)**2+(my-h.y)**2<=(h.r+3)**2){found=h;break;}}
+    if(found){
+      tip.style.opacity=1; tip.style.left=found.x+'px'; tip.style.top=found.y+'px';
+      tip.innerHTML='<b>'+found.b.disp+'</b> · '+found.b.codigo+'<br>'+found.b.sistema+'<br>CCE '+found.b.CCE.toFixed(2);
+    } else tip.style.opacity=0;
+  };
+  canvas.onmouseleave=()=>tip.style.opacity=0;
+
+  // Zoom y pan
+  canvas.onwheel=e=>{
+    e.preventDefault();
+    const scale=e.deltaY>0?0.9:1.1;
+    mw_zoom*=scale;
+    mw_zoom=Math.max(0.5, Math.min(5, mw_zoom));
+    draw();
+  };
+
+  let panning=false, px=0, py=0;
+  canvas.onmousedown=e=>{panning=true; px=e.clientX; py=e.clientY;};
+  canvas.onmouseup=()=>{panning=false;};
+  canvas.onmousemove=e=>{
+    if(panning){
+      mw_pan_x-=(e.clientX-px);
+      mw_pan_y-=(e.clientY-py);
+      px=e.clientX; py=e.clientY;
+      draw();
+    } else {
+      const rc=canvas.getBoundingClientRect(), mx=e.clientX-rc.left, my=e.clientY-rc.top;
+      let found=null;
+      for(const h of hit){if((mx-h.x)**2+(my-h.y)**2<=(h.r+3)**2){found=h;break;}}
+      if(found){
+        tip.style.opacity=1; tip.style.left=found.x+'px'; tip.style.top=found.y+'px';
+        tip.innerHTML='<b>'+found.b.disp+'</b> · '+found.b.codigo+'<br>'+found.b.sistema+'<br>CCE '+found.b.CCE.toFixed(2);
+      } else tip.style.opacity=0;
+    }
+  };
+}
 function draw(){
   const v=document.querySelector('.tab[aria-selected="true"]').dataset.view;
   if(v==='ecr'){legend(document.getElementById('leg1'),drawECR);drawECR();}
@@ -481,6 +603,7 @@ function draw(){
   if(v==='map'){legend(document.getElementById('leg3'),drawMap);drawMap();}
   if(v==='gal'){legend(document.getElementById('leg4'),drawGal);drawGal();}
   if(v==='galmap'){setupGalFilters();drawGalMap();}
+  if(v==='milkyway'){legend(document.getElementById('mw-filters'),drawMilkyWay);drawMilkyWay();}
 }
 draw();
 new ResizeObserver(()=>draw()).observe(document.querySelector('.inner'));

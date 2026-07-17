@@ -486,73 +486,95 @@ function setupGalFilters(){
   });
 }
 // ---- Milky Way visualization ----
-let mw_zoom=1, mw_pan_x=0, mw_pan_y=0;
+let mw_zoom=2.5, mw_pan_x=0, mw_pan_y=0;
 function drawMilkyWay(){
   const canvas=document.getElementById('mw-canvas'), tip=document.getElementById('mw-tip');
   const dpr=Math.min(window.devicePixelRatio||1,2), W=canvas.clientWidth, H=700;
   canvas.width=W*dpr; canvas.height=H*dpr; canvas.style.height=H+'px';
-  const ctx=canvas.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+  const ctx=canvas.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
 
-  // Dibujar galaxia espiral
-  ctx.fillStyle=cssv('--grid'); ctx.globalAlpha=0.15;
-  ctx.beginPath(); ctx.arc(W/2, H/2, 45000*mw_zoom/100000, 0, 7); ctx.fill();
-  ctx.globalAlpha=1;
+  // Fondo con gradiente
+  const grad=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)/2);
+  grad.addColorStop(0, cssv('--ground')+'');
+  grad.addColorStop(1, cssv('--grid')+'22');
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,0,W,H);
 
-  // Espirales (brazos de la galaxia)
-  ctx.strokeStyle=cssv('--grid'); ctx.globalAlpha=0.3; ctx.lineWidth=1;
+  // Escala: 50 ly visible = 200px (escala local)
+  const SCALE = 200 / 50;
+
+  // Centro de la vista (centro galáctico)
+  const cx = W/2 - mw_pan_x;
+  const cy = H/2 - mw_pan_y;
+
+  // Galaxia espiral de fondo (subtil)
+  ctx.strokeStyle=cssv('--muted'); ctx.globalAlpha=0.15; ctx.lineWidth=0.5;
   for(let arm=0; arm<4; arm++){
     ctx.beginPath();
-    for(let t=0; t<50; t+=0.1){
-      const angle = t + arm*Math.PI/2;
-      const r = t*800 * mw_zoom;
-      const x = W/2 + r*Math.cos(angle) - mw_pan_x;
-      const y = H/2 + r*Math.sin(angle) - mw_pan_y;
+    for(let t=0; t<80; t+=0.5){
+      const angle = t*0.1 + arm*Math.PI/2;
+      const r = t*3 * mw_zoom;
+      const x = cx + r*Math.cos(angle);
+      const y = cy + r*Math.sin(angle);
       if(t===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
     }
     ctx.stroke();
   }
   ctx.globalAlpha=1;
 
-  // Centro galáctico
-  ctx.fillStyle=cssv('--accent'); ctx.globalAlpha=0.8;
-  ctx.beginPath(); ctx.arc(W/2 - mw_pan_x, H/2 - mw_pan_y, 8*mw_zoom, 0, 7); ctx.fill();
+  // Centro galáctico (Sgr A*)
+  ctx.fillStyle=cssv('--accent'); ctx.globalAlpha=0.9;
+  ctx.beginPath(); ctx.arc(cx, cy, 12*mw_zoom, 0, 7); ctx.fill();
+  ctx.fillStyle=cssv('--ground'); ctx.font='bold 10px system-ui';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('Sgr A*', cx, cy+18);
   ctx.globalAlpha=1;
 
-  // Sol
-  ctx.fillStyle=cssv('--accent'); ctx.globalAlpha=0.5;
-  ctx.beginPath(); ctx.arc(W/2 - mw_pan_x + (26670*mw_zoom/100000), H/2 - mw_pan_y, 4*mw_zoom, 0, 7); ctx.fill();
+  // Sol (con etiqueta)
+  const sol_x = cx - 26670*SCALE*mw_zoom;
+  const sol_y = cy;
+  ctx.fillStyle=cssv('--accent'); ctx.globalAlpha=0.7;
+  ctx.beginPath(); ctx.arc(sol_x, sol_y, 6*mw_zoom, 0, 7); ctx.fill();
+  ctx.fillStyle=cssv('--ink'); ctx.font='600 9px system-ui';
+  ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.fillText('Sol', sol_x-12, sol_y+12);
   ctx.globalAlpha=1;
 
-  // Cuerpos del dataset
+  // Cuerpos del dataset (VISIBLES)
   const hit=[];
   DATA.bodies.filter(b=>!off.has(b.familia)).forEach(b=>{
-    // Simular posición galáctica (usar datos de hosts cuando disponible)
     const host=DATA.hosts.find(h=>h.sistema===b.sistema);
-    if(host){
-      const x = W/2 + (host.dist*800*mw_zoom/100000)*Math.cos(host.ra*Math.PI/180) - mw_pan_x;
-      const y = H/2 + (host.dist*800*mw_zoom/100000)*Math.sin(host.ra*Math.PI/180) - mw_pan_y;
-      const r = 3 + b.CCE*0.8;
+    if(host && host.dist>0){
+      const angle = host.ra*Math.PI/180;
+      const dist_px = host.dist*SCALE*mw_zoom;
+      const x = cx + dist_px*Math.cos(angle);
+      const y = cy + dist_px*Math.sin(angle);
+      const r = 4 + b.CCE*1.2; // Más grande
 
       ctx.beginPath(); ctx.arc(x, y, r*mw_zoom, 0, 7);
       ctx.fillStyle=cssv(FAM[b.familia])+(b.confianza==='BAJA'?'99':'');
-      ctx.globalAlpha=b.confianza==='BAJA'?0.6:0.85;
+      ctx.globalAlpha=b.confianza==='BAJA'?0.65:0.9;
       ctx.fill();
       ctx.globalAlpha=1;
-      ctx.lineWidth=1;ctx.strokeStyle=cssv('--panel');ctx.stroke();
+      ctx.lineWidth=1.5; ctx.strokeStyle=cssv('--panel'); ctx.stroke();
 
-      hit.push({x,y,r:Math.max(r*mw_zoom+2,6),b});
+      hit.push({x,y,r:Math.max(r*mw_zoom+3,8),b});
     }
   });
 
-  // Etiquetas de sistemas principales
-  ctx.fillStyle=cssv('--ink'); ctx.font='600 10px system-ui'; ctx.textAlign='left'; ctx.textBaseline='middle';
-  DATA.hosts.slice(0,8).forEach(h=>{
+  // Etiquetas de sistemas principales (más legibles)
+  ctx.fillStyle=cssv('--ink'); ctx.font='600 11px system-ui'; ctx.textAlign='left'; ctx.textBaseline='middle';
+  ctx.globalAlpha=0.9;
+  DATA.hosts.slice(0,10).forEach(h=>{
     if(h.dist>0){
-      const x = W/2 + (h.dist*800*mw_zoom/100000)*Math.cos(h.ra*Math.PI/180) - mw_pan_x;
-      const y = H/2 + (h.dist*800*mw_zoom/100000)*Math.sin(h.ra*Math.PI/180) - mw_pan_y;
-      ctx.fillText(h.sistema, x+5, y);
+      const angle = h.ra*Math.PI/180;
+      const dist_px = h.dist*SCALE*mw_zoom;
+      const x = cx + dist_px*Math.cos(angle);
+      const y = cy + dist_px*Math.sin(angle);
+      ctx.fillText(h.sistema, x+8, y);
     }
   });
+  ctx.globalAlpha=1;
 
   // Interactividad
   canvas.onmousemove=e=>{

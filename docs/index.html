@@ -333,78 +333,47 @@ function drawGalMap(){
   if(!canvas) return;
   const W=canvas.width, H=canvas.height;
   const ctx=canvas.getContext('2d');ctx.clearRect(0,0,W,H);
+  const cx=W*0.5, cy=H*0.5, scale=4; // 1 ly = 4 px, zoom ×10 en vecindario
 
-  // ZONA PRINCIPAL: vecindario solar ampliado (100 ly, zoom ×8)
-  const cx_main=W*0.65, cy_main=H*0.5, scale_main=4; // 1 ly = 4 px
-  const fondo=ctx.createRadialGradient(cx_main,cy_main,0,cx_main,cy_main,300);
-  fondo.addColorStop(0,'#0f0020'); fondo.addColorStop(1,'#000000');
-  ctx.fillStyle=fondo; ctx.fillRect(0,0,W*0.75,H);
+  // fondo
+  const grad=ctx.createRadialGradient(cx,cy,0,cx,cy,250);
+  grad.addColorStop(0,'#0f0020'); grad.addColorStop(1,'#000000');
+  ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
 
-  // Sol en el centro
-  ctx.beginPath();ctx.arc(cx_main,cy_main,6,0,7);ctx.fillStyle='#FFD700';ctx.fill();
-  ctx.strokeStyle=cssv('--accent');ctx.lineWidth=1;ctx.stroke();
-  ctx.fillStyle=cssv('--muted');ctx.font='10px system-ui';ctx.fillText('Sol',cx_main+10,cy_main-8);
-
-  // anillos de distancia (10, 20, 30, 40 ly)
-  ctx.globalAlpha=0.2; ctx.strokeStyle=cssv('--grid'); ctx.lineWidth=1; ctx.setLineDash([2,2]);
-  [10,20,30,40].forEach(d=>{
-    ctx.beginPath();ctx.arc(cx_main,cy_main,d*scale_main,0,7);ctx.stroke();
-    ctx.fillStyle=cssv('--muted');ctx.font='9px system-ui';ctx.textAlign='left';
-    ctx.fillText(d+'ly',cx_main+d*scale_main+2,cy_main-3);
-  });
+  // anillos (10, 20, 30 ly)
+  ctx.globalAlpha=0.25; ctx.strokeStyle=cssv('--grid'); ctx.lineWidth=1; ctx.setLineDash([2,2]);
+  for(let d of [10,20,30,40]){
+    ctx.beginPath();ctx.arc(cx,cy,d*scale,0,7);ctx.stroke();
+  }
   ctx.setLineDash([]);ctx.globalAlpha=1;
 
-  // dibuja sistemas
+  // Sol
+  ctx.beginPath();ctx.arc(cx,cy,5,0,7);ctx.fillStyle='#FFD700';ctx.fill();
+  ctx.strokeStyle=cssv('--accent');ctx.lineWidth=1;ctx.stroke();
+  ctx.fillStyle=cssv('--ink');ctx.font='bold 11px system-ui';ctx.textAlign='center';ctx.fillText('☉ Sol',cx,cy+20);
+
+  // sistemas
   const visible=[];
   DATA.hosts.forEach(h=>{
     if(!gal_filters.has(h.fam)) return;
-    const g=galcart(h), dx=g.X-R0, dy=g.Y;
-    const x=cx_main+dx*scale_main, y=cy_main-dy*scale_main;
-    if(Math.abs(dx)>50||Math.abs(dy)>50) return; // fuera del zoom (100 ly)
-    const r=3+h.idx*0.4;
+    const g=galcart(h);
+    const dx=g.X-R0, dy=g.Y;
+    const x=cx+dx*scale, y=cy-dy*scale;
+    const r=4+h.idx*0.5;
     ctx.beginPath();ctx.arc(x,y,r,0,7);
     ctx.fillStyle=cssv(FAM[h.fam]);ctx.fill();
-    ctx.lineWidth=1.5;ctx.strokeStyle=cssv('--panel');ctx.stroke();
-    visible.push({x,y,r:r+3,h,fam:h.fam});
+    ctx.lineWidth=2;ctx.strokeStyle=cssv('--panel');ctx.stroke();
+    visible.push({x,y,r:r+4,h});
   });
 
-  // ZONA SECUNDARIA: mapa de referencia (toda la Vía Láctea, pequeño)
-  const cx_ref=W*0.12, cy_ref=H*0.25, scale_ref=0.003; // escala pequeña
-  ctx.globalAlpha=0.15; ctx.strokeStyle=cssv('--accent'); ctx.lineWidth=1;
-  for(let r=5000;r<30000;r+=5000){
-    ctx.beginPath();ctx.arc(cx_ref,cy_ref,r*scale_ref,0,7);ctx.stroke();
-  }
-  ctx.globalAlpha=0.3; ctx.lineWidth=1.5;
-  for(let arm=0;arm<4;arm++){
-    ctx.beginPath();
-    for(let r=5000;r<28000;r+=1000){
-      const angle=arm*Math.PI/2 + r*0.00008;
-      const x=cx_ref+r*scale_ref*Math.cos(angle);
-      const y=cy_ref+r*scale_ref*Math.sin(angle);
-      if(r===5000) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-  }
-  ctx.globalAlpha=1;
-  ctx.beginPath();ctx.arc(cx_ref,cy_ref,3,0,7);ctx.fillStyle=cssv('--accent');ctx.fill();
-  ctx.fillStyle=cssv('--muted');ctx.font='9px system-ui';ctx.fillText('Referencia galáctico',cx_ref-25,cy_ref-60);
-
-  // marcador de "zona ampliada" en mapa ref
-  const sun_ref_x=cx_ref+R0*scale_ref;
-  const zone_size=100*scale_ref;
-  ctx.strokeStyle=cssv('--accent');ctx.lineWidth=1.5;ctx.globalAlpha=0.5;
-  ctx.strokeRect(sun_ref_x-zone_size,cy_ref-zone_size,zone_size*2,zone_size*2);
-  ctx.globalAlpha=1;
-
-  // info y tooltip
+  // info
   ctx.fillStyle=cssv('--muted');ctx.font='11px system-ui';ctx.textAlign='left';
-  ctx.fillText('Vecindario solar: '+visible.length+' sistemas · '+Math.max(...DATA.hosts.map(h=>h.dist)).toFixed(1)+' ly máximo',12,18);
-  ctx.font='10px system-ui';ctx.fillText('(Zoom ×'+Math.round(scale_main/scale_ref/10)+'  en el mapa de referencia)',12,32);
+  ctx.fillText('Vecindario solar: '+visible.length+' sistemas anfitriones · radio 50 ly',12,18);
 
   canvas.onmousemove=e=>{const rc=canvas.getBoundingClientRect(),mx=e.clientX-rc.left,my=e.clientY-rc.top;
     let f=null;for(const t of visible){if((mx-t.x)**2+(my-t.y)**2<=t.r*t.r){f=t;break;}}
     if(f){tip.style.opacity=1;tip.style.left=f.x+'px';tip.style.top=f.y+'px';
-      tip.innerHTML='<b>'+f.h.sistema+'</b><br>'+f.h.code+' ('+f.fam+')<br>'+f.h.dist.toFixed(1)+' ly';
+      tip.innerHTML='<b>'+f.h.sistema+'</b><br>'+f.h.code+' ('+f.h.fam+')<br>'+f.h.dist.toFixed(1)+' ly';
     }else tip.style.opacity=0;};
   canvas.onmouseleave=()=>tip.style.opacity=0;
 }

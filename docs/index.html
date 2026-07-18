@@ -488,68 +488,46 @@ function setupGalFilters(){
 // ---- Milky Way visualization ----
 let mw_zoom=2.5, mw_pan_x=0, mw_pan_y=0;
 function drawMilkyWayBackground(ctx, W, H, cx, cy){
-  // Fondo oscuro del espacio
-  ctx.fillStyle='#0a0e1a';
-  ctx.fillRect(0,0,W,H);
+  // Fondo azul-negro del espacio
+  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W,H));
+  bg.addColorStop(0, '#1a1a3e');
+  bg.addColorStop(0.3, '#0a0a20');
+  bg.addColorStop(1, '#000000');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
 
-  // Estrellas de fondo (procedurales)
-  const seed = 42;
-  for(let i=0; i<200; i++){
-    const angle = (i*137.5*Math.PI/180) % (2*Math.PI);
-    const dist = (i*i*0.3) % 400;
-    const x = cx + dist*Math.cos(angle);
-    const y = cy + dist*Math.sin(angle);
-    const brightness = (Math.sin(i*3.7)*0.5+0.5);
-    ctx.fillStyle='rgba(200,220,255,'+brightness*0.3+')';
-    ctx.beginPath();
-    ctx.arc(x, y, 0.5+(brightness*1), 0, 7);
-    ctx.fill();
-  }
-
-  // Galaxia espiral realista (5 brazos como la Vía Láctea)
-  for(let arm=0; arm<5; arm++){
-    const armAngle = arm*Math.PI*2/5 + 0.3;
-    for(let t=0; t<60; t+=0.3){
-      const angle = t*0.15 + armAngle;
-      const r = t*8 * mw_zoom;
-      const width = 15 + t*0.5;
-
-      // Gradiente de brazo
-      const grad = ctx.createRadialGradient(cx,cy,0,cx,cy,r+100);
-      grad.addColorStop(0, 'rgba(70,90,150,0)');
-      grad.addColorStop(0.5, 'rgba(100,140,200,0.3)');
-      grad.addColorStop(1, 'rgba(40,60,120,0)');
-      ctx.fillStyle=grad;
-
-      const x = cx + r*Math.cos(angle);
-      const y = cy + r*Math.sin(angle);
-      ctx.beginPath();
-      ctx.arc(x, y, width*mw_zoom, 0, 7);
-      ctx.fill();
-    }
-  }
-
-  // Polvo (rojo/marrón)
+  // Estrellas distantes (solo 80 puntos)
+  ctx.fillStyle = 'rgba(180,200,255,0.6)';
   for(let i=0; i<80; i++){
-    const angle = (i*71*Math.PI/180) % (2*Math.PI);
-    const dist = (i*i*0.7) % 300;
-    const x = cx + dist*Math.cos(angle);
-    const y = cy + dist*Math.sin(angle);
-    const opacity = (Math.sin(i*2.3)*0.5+0.5)*0.2;
-    ctx.fillStyle='rgba(200,100,80,'+opacity+')';
-    ctx.beginPath();
-    ctx.arc(x, y, 2+(opacity*3), 0, 7);
-    ctx.fill();
+    const a = (i*137.5*Math.PI/180);
+    const r = (i*i*0.35) % 350 + 50;
+    const x = cx + r*Math.cos(a);
+    const y = cy + r*Math.sin(a);
+    ctx.fillRect(x-0.5, y-0.5, 1, 1);
   }
 
-  // Centro brillante (bulge)
-  const bulge = ctx.createRadialGradient(cx,cy,0,cx,cy,80);
-  bulge.addColorStop(0, 'rgba(255,220,150,0.6)');
-  bulge.addColorStop(0.5, 'rgba(200,160,100,0.3)');
-  bulge.addColorStop(1, 'rgba(100,80,60,0)');
-  ctx.fillStyle=bulge;
+  // Brazos espirales simples (sin gradientes por cada punto)
+  ctx.strokeStyle = 'rgba(100,130,200,0.2)';
+  ctx.lineWidth = 8;
+  for(let arm=0; arm<4; arm++){
+    ctx.beginPath();
+    for(let t=10; t<300; t+=20){
+      const a = arm*Math.PI*0.5 + t*0.008;
+      const x = cx + t*Math.cos(a);
+      const y = cy + t*Math.sin(a);
+      if(t === 10) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.stroke();
+  }
+
+  // Centro galáctico
+  const c = ctx.createRadialGradient(cx,cy,0,cx,cy,120);
+  c.addColorStop(0, 'rgba(200,160,100,0.4)');
+  c.addColorStop(0.5, 'rgba(150,120,80,0.15)');
+  c.addColorStop(1, 'rgba(60,50,40,0)');
+  ctx.fillStyle = c;
   ctx.beginPath();
-  ctx.arc(cx, cy, 80*mw_zoom, 0, 7);
+  ctx.arc(cx, cy, 120, 0, 6.28);
   ctx.fill();
 }
 

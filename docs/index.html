@@ -172,8 +172,8 @@ function drawOrbit(ctx, cx, cy, semiMajor, semiMinor, rotation=0){
   ctx.rotate(rotation);
   ctx.beginPath();
   ctx.ellipse(0, 0, semiMajor, semiMinor, 0, 0, 2*Math.PI);
-  ctx.restore();
   ctx.stroke();
+  ctx.restore();
 }
 
 // generic scatter

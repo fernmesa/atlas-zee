@@ -276,7 +276,7 @@ function drawMap(){
   ctx.textAlign='center';
   const ecc=0.25; // excentricidad moderada para órbitas realistas
   [10,20,30,40,50].forEach(d=>{
-    const a=d*scale, b=a*(1-ecc*ecc);
+    const a=d*scale, b=a*Math.sqrt(1-ecc*ecc);
     drawOrbit(ctx,cx,cy,a,b,Math.PI/4);
     ctx.fillText(d+' ly',cx,cy-d*scale-3);
   });
@@ -326,7 +326,7 @@ function drawGal(){
   ctx.strokeStyle=cssv('--grid');ctx.fillStyle=cssv('--muted');ctx.font='10px system-ui';ctx.textAlign='center';
   const ecc_gal=0.2;
   [10000,20000,30000].forEach(r=>{
-    const a=r*S, b=a*(1-ecc_gal*ecc_gal);
+    const a=r*S, b=a*Math.sqrt(1-ecc_gal*ecc_gal);
     drawOrbit(ctx,cx,cy,a,b,0);
     ctx.fillText((r/1000)+'k ly',cx,cy-r*S-3);
   });

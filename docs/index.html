@@ -166,12 +166,18 @@ function legend(el, cb){
   });
 }
 // Dibuja órbita elíptica (no circular)
-function drawOrbit(ctx, cx, cy, semiMajor, semiMinor, rotation=0){
+function drawOrbit(ctx, cx, cy, a, b, rot=0){
   ctx.save();
   ctx.translate(cx, cy);
-  ctx.rotate(rotation);
+  ctx.rotate(rot);
   ctx.beginPath();
-  ctx.ellipse(0, 0, semiMajor, semiMinor, 0, 0, 2*Math.PI);
+  for(let i=0;i<=360;i+=5){
+    const t=i*Math.PI/180;
+    const x=a*Math.cos(t);
+    const y=b*Math.sin(t);
+    if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+  }
+  ctx.closePath();
   ctx.stroke();
   ctx.restore();
 }

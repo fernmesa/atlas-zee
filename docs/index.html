@@ -52,6 +52,7 @@ tr:hover td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
 .foot{color:var(--muted);font-size:12px;margin-top:8px}
 .scroll{overflow-x:auto}
 .rankbar{height:10px;border-radius:5px;display:inline-block;vertical-align:middle}
+.tab[data-view="galmap"],.tab[data-view="milkyway"]{display:none}
 </style>
 
 <div class="wrap"><div class="inner">
@@ -164,6 +165,16 @@ function legend(el, cb){
     el.appendChild(d);
   });
 }
+// Dibuja órbita elíptica (no circular)
+function drawOrbit(ctx, cx, cy, semiMajor, semiMinor, rotation=0){
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.rotate(rotation);
+  ctx.beginPath();
+  ctx.ellipse(0, 0, semiMajor, semiMinor, 0, 0, 2*Math.PI);
+  ctx.restore();
+  ctx.stroke();
+}
 
 // generic scatter
 function scatter(canvas, tip, pts, xacc, yacc, opts){
@@ -254,11 +265,15 @@ function drawMap(){
   canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';
   const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
   const cx=W/2, cy=H/2, R=50, scale=(Math.min(W,H)/2-30)/R; // 50 ly -> borde
-  // anillos de distancia
+  // anillos de distancia (órbitas elípticas, no circulares)
   ctx.strokeStyle=cssv('--grid');ctx.fillStyle=cssv('--muted');ctx.font='10px system-ui';
   ctx.textAlign='center';
-  [10,20,30,40,50].forEach(d=>{ctx.beginPath();ctx.arc(cx,cy,d*scale,0,7);ctx.stroke();
-    ctx.fillText(d+' ly',cx,cy-d*scale-3);});
+  const ecc=0.25; // excentricidad moderada para órbitas realistas
+  [10,20,30,40,50].forEach(d=>{
+    const a=d*scale, b=a*(1-ecc*ecc);
+    drawOrbit(ctx,cx,cy,a,b,Math.PI/4);
+    ctx.fillText(d+' ly',cx,cy-d*scale-3);
+  });
   const zmax=50;
   const hit=[];
   DATA.hosts.filter(h=>!off.has(h.fam)).forEach(h=>{
@@ -299,12 +314,16 @@ function drawGal(){
   canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';
   const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
   const cx=W*0.5, cy=H*0.56, S=(Math.min(W,H)*0.44)/32000; // 32000 ly -> borde
-  // disco galactico (relleno tenue) + anillos
+  // disco galactico (relleno tenue) + anillos elípticos
   ctx.beginPath();ctx.arc(cx,cy,50000*S,0,7);
   ctx.fillStyle=cssv('--grid');ctx.globalAlpha=.25;ctx.fill();ctx.globalAlpha=1;
   ctx.strokeStyle=cssv('--grid');ctx.fillStyle=cssv('--muted');ctx.font='10px system-ui';ctx.textAlign='center';
-  [10000,20000,30000].forEach(r=>{ctx.beginPath();ctx.arc(cx,cy,r*S,0,7);ctx.stroke();
-    ctx.fillText((r/1000)+'k ly',cx,cy-r*S-3);});
+  const ecc_gal=0.2;
+  [10000,20000,30000].forEach(r=>{
+    const a=r*S, b=a*(1-ecc_gal*ecc_gal);
+    drawOrbit(ctx,cx,cy,a,b,0);
+    ctx.fillText((r/1000)+'k ly',cx,cy-r*S-3);
+  });
   // centro galactico
   ctx.beginPath();ctx.arc(cx,cy,5,0,7);ctx.fillStyle=cssv('--accent');ctx.fill();
   ctx.fillStyle=cssv('--ink');ctx.font='600 11px system-ui';ctx.textAlign='center';

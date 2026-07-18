@@ -235,4 +235,17 @@ Ver `CONTRIBUTING.md` para cómo proponer nuevas capas o mejoras al modelo.
 
 ---
 
+## Referencias científicas
+
+ATLAS se apoya en observaciones, datos y métodos de la comunidad astronómica. Esta lista marca trabajos de especial relevancia para la priorización de observaciones y mejora de datos espectrales.
+
+### Detección de exoplanetas terrestres
+
+- **Liang, Y., Winn, J.N., Melchior, P., Lu, S., Tran, Q.H.** (2026)  
+  *AESTRA II: Generative Spectral Modeling of the Sun as a Star for Precise Radial Velocities*  
+  arXiv:2606.13574  
+  **Relevancia para ATLAS:** Descomposición espectral mejora dramáticamente la detección de planetas pequeños (K < 0.3 m/s). AESTRA filtra variabilidad estelar, absorción telúrica e instrumental, dejando datos limpios para calcular parámetros E, C, R. El método identifica 238 planetas en pruebas de inyección-recuperación, incluyendo 13 bajo 0.3 m/s. Usamos sus rangos de periodicidad (2.5-400 días) y métricas de confiabilidad para priorizar candidatos a observar.
+
+---
+
 Cita: *ATLAS v0.2 (2026), CC-BY-4.0. Motor abierto de clasificación de Zonas de Estabilidad Ecosistémica.*

@@ -136,7 +136,7 @@ tr:hover td{background:color-mix(in srgb,var(--accent) 8%,transparent)}
       <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Familias visibles:</label>
       <div id="mw-filters" style="display:flex;flex-wrap:wrap;gap:8px"></div>
     </div>
-    <div class="canvas-wrap"><canvas id="mw-canvas" width="1000" height="700"></canvas><div class="tip" id="mw-tip"></div></div>
+    <div class="canvas-wrap"><canvas id="mw-canvas" width="1000" height="700" style="background-image:url('milkyway.jpg');background-size:cover;background-position:center"></canvas><div class="tip" id="mw-tip"></div></div>
     <p class="foot">Escala galactocéntrica: ~100,000 años luz de diámetro. Los datos se proyectan en coordenadas cartesianas X-Y (visto de cara). Zoom y panning interactivo.</p>
   </div>
 </div></div>
@@ -488,47 +488,9 @@ function setupGalFilters(){
 // ---- Milky Way visualization ----
 let mw_zoom=2.5, mw_pan_x=0, mw_pan_y=0;
 function drawMilkyWayBackground(ctx, W, H, cx, cy){
-  // Fondo azul-negro del espacio
-  const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(W,H));
-  bg.addColorStop(0, '#1a1a3e');
-  bg.addColorStop(0.3, '#0a0a20');
-  bg.addColorStop(1, '#000000');
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, W, H);
-
-  // Estrellas distantes (solo 80 puntos)
-  ctx.fillStyle = 'rgba(180,200,255,0.6)';
-  for(let i=0; i<80; i++){
-    const a = (i*137.5*Math.PI/180);
-    const r = (i*i*0.35) % 350 + 50;
-    const x = cx + r*Math.cos(a);
-    const y = cy + r*Math.sin(a);
-    ctx.fillRect(x-0.5, y-0.5, 1, 1);
-  }
-
-  // Brazos espirales simples (sin gradientes por cada punto)
-  ctx.strokeStyle = 'rgba(100,130,200,0.2)';
-  ctx.lineWidth = 8;
-  for(let arm=0; arm<4; arm++){
-    ctx.beginPath();
-    for(let t=10; t<300; t+=20){
-      const a = arm*Math.PI*0.5 + t*0.008;
-      const x = cx + t*Math.cos(a);
-      const y = cy + t*Math.sin(a);
-      if(t === 10) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-  }
-
-  // Centro galáctico
-  const c = ctx.createRadialGradient(cx,cy,0,cx,cy,120);
-  c.addColorStop(0, 'rgba(200,160,100,0.4)');
-  c.addColorStop(0.5, 'rgba(150,120,80,0.15)');
-  c.addColorStop(1, 'rgba(60,50,40,0)');
-  ctx.fillStyle = c;
-  ctx.beginPath();
-  ctx.arc(cx, cy, 120, 0, 6.28);
-  ctx.fill();
+  // Imagen real de la Vía Láctea se muestra vía CSS background-image del canvas
+  // No dibujamos nada aquí para que la imagen sea clara
+  // (El canvas tiene style="background-image:url('milkyway.jpg')")
 }
 
 function drawMilkyWay(){

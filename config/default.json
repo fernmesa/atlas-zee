@@ -2,8 +2,8 @@
   "_comentario": "Capas activas. Cambia 'scheme' a 'simple3' para reclasificar en 3 clases con el mismo núcleo. Pon 'preferir_formula': true para auditar el modelo automático ignorando al experto.",
   "index_provider": "ecr",
   "scheme": "zee7",
-  "gates": ["min_data"],
-  "annotators": ["biochem"],
+  "gates": ["min_data", "quality_schema"],
+  "annotators": ["biochem", "observability", "energy_orbital"],
   "params": {
     "preferir_formula": false,
     "min_fuentes": 1,

@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ATLAS Body",
+  "description": "Esquema de validación para un registro de data/atlas_bodies.csv, inspirado en oec.xsd de Open Exoplanet Catalogue (github.com/OpenExoplanetCatalogue/open_exoplanet_catalogue). No sustituye a gate_min_data.py (que decide admisión científica); esto valida FORMA y RANGO de los datos antes de que lleguen al núcleo.",
+  "type": "object",
+  "required": ["nombre"],
+  "properties": {
+    "nombre": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Identificador único del cuerpo"
+    },
+    "sistema": { "type": "string" },
+    "tipo": { "type": "string" },
+    "masa_Me": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 5000,
+      "description": "Masa en masas terrestres. >5000 M⊕ excede el rango de enanas marrones."
+    },
+    "radio_Re": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 30,
+      "description": "Radio en radios terrestres. >30 R⊕ es implausible para planeta/satélite."
+    },
+    "dist_AU": {
+      "type": ["number", "null"],
+      "exclusiveMinimum": 0,
+      "maximum": 100000,
+      "description": "Semieje orbital en AU"
+    },
+    "insol_Wm2": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "atmosfera": { "type": "string" },
+    "agua": { "type": "string" },
+    "vulcanismo": { "type": "string" },
+    "exp_E": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 9,
+      "description": "Índice de energía experto, escala 0-9 (ver layers/indices_ecr.py)"
+    },
+    "exp_C": { "type": ["number", "null"], "minimum": 0, "maximum": 9 },
+    "exp_R": { "type": ["number", "null"], "minimum": 0, "maximum": 9 },
+    "exp_familia": {
+      "type": "string",
+      "enum": ["", "A", "M", "O", "V", "C", "G", "X"],
+      "description": "Familia ZEE-7 si el experto la fija a mano"
+    },
+    "confianza": {
+      "type": "string",
+      "enum": ["", "ALTA", "MEDIA", "BAJA"]
+    },
+    "fuentes": {
+      "type": "string",
+      "description": "Lista separada por ';' de fuentes independientes"
+    },
+    "notas": { "type": "string" }
+  },
+  "additionalProperties": true
+}

@@ -49,7 +49,8 @@ def run(bodies, config):
     prov_name = config["index_provider"]
     sch_name = config["scheme"]
     gate_names = config.get("gates", [])
-    ctx = config.get("params", {})
+    ctx = dict(config.get("params", {}))
+    ctx["_all_bodies"] = bodies  # disponible para capas que necesiten el sistema completo
 
     provider = registry.INDEX_PROVIDERS[prov_name]
     scheme = registry.SCHEMES[sch_name]

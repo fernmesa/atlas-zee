@@ -114,6 +114,16 @@ Titan                      M5     5.33      sí   E5 C5 R6
 - **`observability`** *(anotador)* — Calcula el **valor de la información**: qué datos faltan,
   cuánto subiría la clasificación si fueran favorables, y con qué plausibilidad. Alimenta el
   generador de solicitudes de observación.
+- **`indices_ecr_ml`** — Alternativa a `indices_ecr` con un tercer escalón: experto → fórmula →
+  **fallback k-vecinos-más-cercanos** (Python puro, sin dependencias) para el caso límite de un
+  cuerpo sin ningún observable físico/químico conocido. Úsala con `--provider ecr_ml`.
+- **`gate_quality_schema`** — Valida forma y rango de los datos (masa negativa, familia mal
+  escrita, radio implausible...) contra `data/atlas_body_schema.json`, antes de que lleguen a la
+  ciencia. Complementa a `gate_min_data`: esta capa exige que lo que HAY sea válido, no que haya
+  suficiente cantidad.
+- **`energy_orbital`** *(anotador)* — Estima energía orbital específica, velocidad orbital y
+  periodo (Kepler III) desde `dist_AU`, y detecta resonancias orbitales simples (2:1, 3:2...)
+  entre cuerpos del mismo sistema. Asume estrella ~1 M☉ salvo en el sistema Solar.
 
 ## Herramientas (`tools/`)
 

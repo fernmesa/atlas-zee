@@ -130,7 +130,14 @@ Titan                      M5     5.33      sí   E5 C5 R6
 ```bash
 python tools/import_nasa.py --limit 200        # importa exoplanetas reales del NASA Archive
 python tools/observation_requests.py --top 10  # prioriza objetivos para pedir telescopio
+python tools/classify_stars.py                 # clasifica estrellas por sus planetas
 ```
+
+`classify_stars.py` agrega la clasificación de los planetas de cada sistema en un
+**índice anfitrión** por estrella (media ponderada de los 3 mejores mundos), pensado
+para priorizar sistema completo en vez de planeta suelto. Sistemas binarios/múltiples:
+`Body.sistema` ya nombra la componente estelar concreta (p.ej. "Gliese 667C"), siguiendo
+la convención `host_star_flag` de NASA — ver `data/reference/nasa_exoplanet_archive_parameter_template.csv`.
 
 El importador trae lo medible (masa, radio, insolación) y deja atmósfera/agua en blanco:
 los mundos sin datos caen honestamente en **X** con confianza BAJA, y el generador de

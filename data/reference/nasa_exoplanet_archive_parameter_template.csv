@@ -1,0 +1,195 @@
+######### PREAMBLE #########
+# NASA Exoplanet Archive template for reporting planet parameters for confirmed or validated planets detected by transit and/or radial velocity
+# Template Version 1.0 2025-08-12
+# This template was prepared by: [e.g. EXOFASTv2, allesfitter v1.2.9]
+
+# NOTES:
+
+# FILE PREPARATION:
+# Format: csv
+# # indicates a comment
+# * indicates a required row; other rows can be removed or commented out as necessary
+# Each file represents one gravitationally-bound system (which can include multiple stars and planets)
+# Each section has example rows (commented out) for guidance; they can be removed or left commented out
+# All parameters under a 'st_name' or 'pl_name' row are considered to belong to the named object, until a different name is reached (or the end of the file).
+# Users are expected to take note of the units anticipated by this template
+# If the system has more than one star, copy and paste the stellar parameters section multiple times,
+# just be sure to set the host_star_flag to 1 for the star/s that host the planets (two stars can have host_star_flag = 1 for circumbinary planets)
+
+# NAMING CONVENTIONS
+# Names for planets provided in this template must adhere to the accepted catalogs in the NASA Exoplanet Archive (see link below)
+# Accepted Catalogs: https://exoplanetarchive.ipac.caltech.edu/applications/Inventory/search.html
+# Planets requiring new catalog names to be defined (i.e. the first confirmed planet from a new survey) cannot be submitted using this template
+
+# PARAMETER DEFINITIONS
+# Uncertainties are assumed to be 1-sigma uncertainties
+# No specific planet parameter is required but at least one planet parameter must be specified
+# Planet parameters must be published in an accepted and refereed journal to be submitted with this template
+# Values, uncertainties, and precisions provided in this file MUST match the values, uncertainties, and precisions published in the accepted paper
+# Stellar and planet parameters delivered in this file MUST appear in the accepted paper; do not include additional parameters here which are not in the paper
+
+# GET HELP
+# Please submit a helpdesk ticket for assistance with this template: https://exoplanetarchive.ipac.caltech.edu/cgi-bin/Helpdesk/nph-genTicketForm
+
+######### PLANET PARAMETERS #########
+#pl_name,HD 209458 b
+#pl_refname,2021ApJS..255....8R
+#pl_orbper,3.524760
+#pl_orbpererr1,0.000013
+#pl_orbpererr2,-0.000013
+#pl_orbsmax,0.04634
+#pl_orbsmaxerr1,0.00069
+#pl_orbsmaxerr2,-0.00070
+#pl_msinij,0.665
+#pl_msinijerr1,0.022
+#pl_msinijerr2,-0.022
+
+pl_defaultname,*Confirmed Planet Name [must include planet letter, e.g. KELT-20 b]
+pl_alias,Optional additional alias if confirmed by multiple projects [e.g. MASCARA-2 b]
+pl_candidatename,Candidate Planet Name [e.g. TOI-1181.01, KOI-1972.01,EPIC 201147085.01]
+pl_refname,*Planetary Parameter Reference [arxiv link or ADS bibcode, paper must be accepted in a refereed journal]
+pl_orbper,Orbital Period [days]
+pl_orbpererr1,Orbital Period Upper Unc. [days]
+pl_orbpererr2,Orbital Period Lower Unc. [days]
+pl_orbsmax,Orbit Semi-Major Axis [au])
+pl_orbsmaxerr1,Orbit Semi-Major Axis Upper Unc. [au]
+pl_orbsmaxerr2,Orbit Semi-Major Axis Lower Unc. [au]
+pl_rade,Equatorial Planet Radius [Earth Radius] [Note: will be converted to units of Jupiter Radius unless pl_radj supplied]
+pl_radeerr1,Equatorial Planet Radius Upper Unc. [Earth Radius]
+pl_radeerr2,Equatorial Planet Radius Lower Unc. [Earth Radius]
+pl_radj,Equatorial Planet Radius [Jupiter Radius] [Note: will be converted to units of Earth Radius unless pl_rade supplied]
+pl_radjerr1,Equatorial Planet Radius Upper Unc. [Jupiter Radius]
+pl_radjerr2,Equatorial Planet Radius Lower Unc. [Jupiter Radius]
+pl_masse,Planet Mass [Earth Mass] [Note: will be converted to units of Jupiter Mass unless pl_massj or pl_msinij supplied]
+pl_masseerr1,Planet Mass [Earth Mass] Upper Unc.
+pl_masseerr2,Planet Mass [Earth Mass] Lower Unc.
+pl_massj,Planet Mass [Jupiter Mass] [Note: will be converted to units of Earth mass unless pl_masse or pl_msine supplied]
+pl_massjerr1,Planet Mass [Jupiter Mass] Upper Unc.
+pl_massjerr2,Planet Mass [Jupiter Mass] Lower Unc.
+pl_msinie,Planet Mass*sin(i) [Earth Mass] [Note: will be converted to units of Jupiter Mass unless pl_massj or pl_msinij supplied]
+pl_msinieerr1,Planet Mass*sin(i) [Earth Mass] Upper Unc.
+pl_msinieerr2,Planet Mass*sin(i) [Earth Mass] Lower Unc.
+pl_msinij,Planet Mass*sin(i) [Jupiter Mass] [Note: will be converted to units of Earth Mass unless pl_masse or pl_msinie supplied]
+pl_msinijerr1,Planet Mass*sin(i) [Jupiter Mass] Upper Unc.
+pl_msinijerr2,Planet Mass*sin(i) [Jupiter Mass] Lower Unc.
+pl_dens,Planet Density [g/cm**3]
+pl_denserr1,Planet Density Upper Unc. [g/cm**3]
+pl_denserr2,Planet Density Lower Unc. [g/cm**3]
+pl_orbeccen,Eccentricity
+pl_orbeccenerr1,Eccentricity Upper Unc.
+pl_orbeccenerr2,Eccentricity Lower Unc.
+pl_insol,Insolation Flux [Earth Flux]
+pl_insolerr1,Insolation Flux Upper Unc. [Earth Flux]
+pl_insolerr2,Insolation Flux Lower Unc. [Earth Flux]
+pl_eqt,Equilibrium Temperature [K]
+pl_eqterr1,Equilibrium Temperature Upper Unc. [K]
+pl_eqterr2,Equilibrium Temperature Lower Unc. [K]
+pl_orbincl,Inclination [deg]
+pl_orbinclerr1,Inclination Upper Unc. [deg]
+pl_orbinclerr2,Inclination Lower Unc. [deg]
+pl_tranmid,Transit Midpoint, or Time Corresponding to a True Anomaly of 90-omega, or Time of Minimum Projected Separation [days]
+pl_tranmiderr1,Transit Midpoint Upper Unc. [days]
+pl_tranmiderr2,Transit Midpoint Lower Unc. [days]
+pl_tsystemref,Time Reference Frame and Standard [e.g. JD, BJD, BJD-UTC; N.B. use full precision timestamp, not BKJD or MJD, etc]]
+pl_imppar,Impact Parameter
+pl_impparerr1,Impact Parameter Upper Unc.
+pl_impparerr2,Impact Parameter Lower Unc.
+pl_trandep,Transit Depth [%]
+pl_trandeperr1,Transit Depth Upper Unc. [%]
+pl_trandeperr2,Transit Depth Lower Unc. [%]
+pl_trandur,Transit Duration [hours]
+pl_trandurerr1,Transit Duration Upper Unc. [hours]
+pl_trandurerr2,Transit Duration Lower Unc. [hours]
+pl_ratdor,Ratio of Semi-Major Axis to Stellar Radius
+pl_ratdorerr1,Ratio of Semi-Major Axis to Stellar Radius Upper Unc.
+pl_ratdorerr2,Ratio of Semi-Major Axis to Stellar Radius Lower Unc.
+pl_ratror,Ratio of Planet to Stellar Radius
+pl_ratrorerr1,Ratio of Planet to Stellar Radius Upper Unc.
+pl_ratrorerr2,Ratio of Planet to Stellar Radius Lower Unc.
+pl_occdep,Occultation Depth [%]
+pl_occdeperr1,Occultation Depth Upper Unc. [%]
+pl_occdeperr2,Occultation Depth Lower Unc. [%]
+pl_orbtper,Epoch of Periastron [days]
+pl_orbtpererr1,Epoch of Periastron Upper Unc. [days]
+pl_orbtpererr2,Epoch of Periastron Lower Unc. [days]
+pl_orblper,Argument of Periastron [deg]
+pl_orblpererr1,Argument of Periastron Upper Unc. [deg]
+pl_orblpererr2,Argument of Periastron Lower Unc. [deg]
+pl_rvamp,Radial Velocity Amplitude [m/s]
+pl_rvamperr1,Radial Velocity Amplitude Upper Unc. [m/s]
+pl_rvamperr2,Radial Velocity Amplitude Lower Unc. [m/s]
+pl_projobliq,Projected Obliquity [deg]
+pl_projobliqerr1,Projected Obliquity Upper Unc. [deg]
+pl_projobliqerr2,Projected Obliquity Lower Unc. [deg]
+pl_trueobliq,True Obliquity [deg]
+pl_trueobliqerr1,True Obliquity Upper Unc. [deg]
+pl_trueobliqerr2,True Obliquity Lower Unc. [deg]
+
+######### STELLAR PARAMETERS #########
+# Note: If there is more than one star in the system, repeat the block of parameters below for each star, with a unique name and TIC ID for each star
+# Use the host_star_flag to indicate which star/s the planet orbits
+
+#st_name,HD 209458
+#tic_id,TIC 420814525
+#host_star_flag,1
+#st_refname,2021ApJS..255....8R
+#st_teff,6026.3549454750
+#st_tefferr1,96.8980296914
+#st_tefferr2,-96.8980296914
+#st_rad,1.1999759942400
+#st_raderr1,0.0282007051787
+#st_raderr2,-0.0282007051787
+
+st_name,*Host Star Name
+tic_id,*Host Star TIC ID
+host_star_flag,*Host star of planets in this file [1 = host star, 0 = non-host star in system; if two stars have hostflag=1, the planet is assumed to be circumbinary]
+st_refname,*Stellar Parameter Reference [arxiv link or ADS bibcode] [Note: you can refer to a previously published set of stellar parameters here without repeating them below]
+st_spectype,Spectral Type
+st_teff,Stellar Effective Temperature [K]
+st_tefferr1,Stellar Effective Temperature Upper Unc. [K]
+st_tefferr2,Stellar Effective Temperature Lower Unc. [K]
+st_rad,Stellar Radius [Solar Radius]
+st_raderr1,Stellar Radius Upper Unc. [Solar Radius]
+st_raderr2,Stellar Radius Lower Unc. [Solar Radius]
+st_mass,Stellar Mass [Solar mass]
+st_masserr1,Stellar Mass Upper Unc. [Solar mass]
+st_masserr2,Stellar Mass Lower Unc. [Solar mass]
+st_met,Stellar Metallicity [dex]
+st_meterr1,Stellar Metallicity Upper Unc. [dex]
+st_meterr2,Stellar Metallicity Lower Unc. [dex]
+st_metratio,Stellar Metallicity Ratio [e.g. [Fe/H]]
+st_lum,Stellar Luminosity [log(Solar)]
+st_lumerr1,Stellar Luminosity Upper Unc. [log(Solar)]
+st_lumerr2,Stellar Luminosity Lower Unc. [log(Solar)]
+st_logg,Stellar Surface Gravity [log10(cm/s**2)]
+st_loggerr1,Stellar Surface Gravity Upper Unc. [log10(cm/s**2)]
+st_loggerr2,Stellar Surface Gravity Lower Unc. [log10(cm/s**2)]
+st_age,Stellar Age [Gyr]
+st_ageerr1,Stellar Age Upper Unc. [Gyr]
+st_ageerr2,Stellar Age Lower Unc. [Gyr]
+st_dens,Stellar Density [g/cm**3]
+st_denserr1,Stellar Density Upper Unc. [g/cm**3]
+st_denserr2,Stellar Density Lower Unc. [g/cm**3]
+st_vsin,Stellar Rotational Velocity [km/s]
+st_vsinerr1,Stellar Rotational Velocity [km/s] Upper Unc.
+st_vsinerr2,Stellar Rotational Velocity [km/s] Lower Unc.
+st_rotp,Stellar Rotational Period [days]
+st_rotperr1,Stellar Rotational Period [days] Upper Unc.
+st_rotperr2,Stellar Rotational Period [days] Lower Unc.
+st_radv,Systemic Radial Velocity [km/s]
+st_radverr1,Systemic Radial Velocity Upper Unc. [km/s]
+st_radverr2,Systemic Radial Velocity Lower Unc. [km/s]
+
+######### FLAGS #########
+# Note: All flags are assumed 0 by default, if not set to 1 in this section
+#rv_flag,1
+#tran_flag,1
+
+rv_flag,Radial Velocity Detection Flag [1 = planet host star exhibits measured radial velocity variations due to the planet]
+tran_flag,Transit Detection Flag [1 = planet is observed to transit its host star]
+ast_flag,Astrometry Detection Flag [1 = planet host star is observed to exhibit astrometric variations due to the planet]
+ima_flag,Imaging Detection Flag [1 = planet has been observed via the imaging technique]
+obm_flag,Orbital Brightness Modulation Detection Flag [1 = orbital phase curve of planet is observed to have brightness modulations caused by the planet]
+ttv_flag,Data show Transit Timing Variations induced by another planet in the system [1 = transit times of the planet are observed to vary]
+etv_flag,Data show Eclipse Timing Variations [1 = eclipse times of circumbinary host stars are observed to vary due to the planet]
+

@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 salida_clasificacion.csv
 salida_simple3.csv
+salida_estrellas.csv
 *.tmp
 .DS_Store
 

@@ -54,11 +54,28 @@ def _C_formula(b):
 
 
 def _R_formula(b):
-    """Resistencia 0-9. Con datos escasos (sin excentricidad) es la más incierta."""
+    """Resistencia 0-9. Con datos escasos (sin excentricidad) es la más incierta.
+
+    Umbral de retención atmosférica: 0.8 R⊕, según Hill, Kane, Foley & Schaefer
+    (2026), "Smaller Than Earth Habitability Model (STEHM): The Lower Size
+    Limit for Atmosphere Retention in the Habitable Zone", Planetary Science
+    Journal 7(6) -- ver REFERENCES.md. Reemplaza el corte previo por masa
+    (0.1-10 M⊕), que no distinguía radio de composición. Si no hay radio
+    conocido, cae de vuelta a la heurística de masa (peor proxy, pero mejor
+    que nada). STEHM señala que el factor MÁS influyente es en realidad el
+    inventario de carbono del manto, que ATLAS no modela -- ver
+    layers/atmosphere_retention.py para el detalle completo del análisis.
+    """
     r = 3
-    m = b.masa_Me
-    if m is not None and 0.1 <= m <= 10:   # tamaño que retiene atmósfera
-        r += 1
+    if b.radio_Re is not None:
+        if b.radio_Re >= 0.8:      # retiene atmósfera bajo condiciones tipo Tierra
+            r += 1
+        elif b.radio_Re >= 0.6:    # bajo el umbral, pero cerca -> posible con condiciones favorables
+            r += 0
+        else:                       # muy por debajo del umbral -> pérdida casi segura
+            r -= 1
+    elif b.masa_Me is not None and 0.1 <= b.masa_Me <= 10:
+        r += 1  # sin radio conocido: heurística de masa como respaldo
     if "campo magn" in b.notas.lower() and "sin campo" not in b.notas.lower():
         r += 1
     # exoplanetas de enana M activa: penalización

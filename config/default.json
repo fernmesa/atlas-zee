@@ -3,7 +3,7 @@
   "index_provider": "ecr",
   "scheme": "zee7",
   "gates": ["min_data", "quality_schema"],
-  "annotators": ["biochem", "observability", "energy_orbital"],
+  "annotators": ["biochem", "observability", "energy_orbital", "atmosphere_retention"],
   "params": {
     "preferir_formula": false,
     "min_fuentes": 1,

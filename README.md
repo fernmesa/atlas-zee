@@ -124,6 +124,10 @@ Titan                      M5     5.33      sí   E5 C5 R6
 - **`energy_orbital`** *(anotador)* — Estima energía orbital específica, velocidad orbital y
   periodo (Kepler III) desde `dist_AU`, y detecta resonancias orbitales simples (2:1, 3:2...)
   entre cuerpos del mismo sistema. Asume estrella ~1 M☉ salvo en el sistema Solar.
+- **`atmosphere_retention`** *(anotador)* — Clasifica probable/incierta/improbable la
+  retención atmosférica según el umbral de radio de STEHM (0.8 R⊕, ver `REFERENCES.md`),
+  y señala explícitamente qué factores decisivos del paper (carbono del manto, fracción
+  de núcleo...) ATLAS no observa. También informa el umbral de `_R_formula()`.
 
 ## Herramientas (`tools/`)
 
@@ -131,6 +135,7 @@ Titan                      M5     5.33      sí   E5 C5 R6
 python tools/import_nasa.py --limit 200        # importa exoplanetas reales del NASA Archive
 python tools/observation_requests.py --top 10  # prioriza objetivos para pedir telescopio
 python tools/classify_stars.py                 # clasifica estrellas por sus planetas
+python tools/validate_voi_vs_tsm.py             # valida el VOI contra el TSM real (Kempton 2018)
 ```
 
 `classify_stars.py` agrega la clasificación de los planetas de cada sistema en un
@@ -138,6 +143,14 @@ python tools/classify_stars.py                 # clasifica estrellas por sus pla
 para priorizar sistema completo en vez de planeta suelto. Sistemas binarios/múltiples:
 `Body.sistema` ya nombra la componente estelar concreta (p.ej. "Gliese 667C"), siguiendo
 la convención `host_star_flag` de NASA — ver `data/reference/nasa_exoplanet_archive_parameter_template.csv`.
+
+`validate_voi_vs_tsm.py` contrasta la prioridad VOI de `observability.py` contra el TSM
+(Transmission Spectroscopy Metric, la métrica real que la comunidad usa para elegir
+objetivos JWST) para los ~40 exoplanetas curados, trayendo datos estelares/fotométricos
+en vivo del NASA Exoplanet Archive. Resultado actual (ver `validacion_voi_vs_tsm.md`):
+correlación de Spearman ρ=-0.56 (p=0.0004, N=37) — **negativa y significativa**, evidencia
+de que VOI (¿nos diría algo sobre habitabilidad?) y TSM (¿podemos verlo bien con JWST?)
+son ejes distintos, no intercambiables. Ver `REFERENCES.md` para la cita completa.
 
 El importador trae lo medible (masa, radio, insolación) y deja atmósfera/agua en blanco:
 los mundos sin datos caen honestamente en **X** con confianza BAJA, y el generador de
@@ -262,6 +275,13 @@ ATLAS se apoya en observaciones, datos y métodos de la comunidad astronómica. 
   *AESTRA II: Generative Spectral Modeling of the Sun as a Star for Precise Radial Velocities*  
   arXiv:2606.13574  
   **Relevancia para ATLAS:** Descomposición espectral mejora dramáticamente la detección de planetas pequeños (K < 0.3 m/s). AESTRA filtra variabilidad estelar, absorción telúrica e instrumental, dejando datos limpios para calcular parámetros E, C, R. El método identifica 238 planetas en pruebas de inyección-recuperación, incluyendo 13 bajo 0.3 m/s. Usamos sus rangos de periodicidad (2.5-400 días) y métricas de confiabilidad para priorizar candidatos a observar.
+
+### Retención atmosférica y habitabilidad
+
+- **Hill, M.L., Kane, S.R., Foley, B.J., Schaefer, L.K.** (2026)  
+  *Smaller Than Earth Habitability Model (STEHM): The Lower Size Limit for Atmosphere Retention in the Habitable Zone*  
+  The Planetary Science Journal, 7(6) · https://iopscience.iop.org/article/10.3847/PSJ/ae6804  
+  **Relevancia para ATLAS:** Determina el radio mínimo (0.8 R⊕ bajo condiciones tipo Tierra) para retener atmósfera en escalas multi-gigaaño, y muestra que el factor más decisivo es el inventario de carbono del manto, no el tamaño. Sustituye el corte de masa previo de `_R_formula()` por este umbral de radio, con base física real. La capa `atmosphere_retention` documenta explícitamente qué factores del paper (composición de manto/núcleo) ATLAS no observa, en vez de fingir certeza inexistente.
 
 ---
 

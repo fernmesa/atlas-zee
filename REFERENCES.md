@@ -33,6 +33,30 @@ Este archivo documenta trabajos astronómicos y astrobiológicos que sustentan, 
 
 ---
 
+### Campos magnéticos planetarios (referencia cualitativa, no operacionalizada)
+
+**Revilla, D., Pallé, E., Luque, R., Amado, P.J., et al.** (2026)  
+**Planet-induced Periodic Modulation of Stellar Activity in GJ 436: Insights into a Warm Neptune's Magnetic Field**  
+*Science, DOI: 10.1126/science.adv3075 · arXiv:2604.06969*
+
+- **Contribución:** Primera detección con evidencia sólida de un campo magnético planetario
+  vía interacción estrella-planeta: la actividad cromosférica de GJ 436 se modula
+  periódicamente en fase con la órbita de GJ 436 b. Con 18 años de espectroscopía de alta
+  resolución (CARMENES + HARPS), estiman un campo de 6-110 G -- hasta ~27 veces el de
+  Júpiter pese al menor tamaño del planeta.
+- **Para ATLAS:** A diferencia de STEHM o el TSM de Kempton et al., **este método NO es
+  generalizable** a una fórmula reutilizable: depende de una resonancia específica entre
+  la órbita de GJ 436 b y el ciclo magnético de 8 años de su estrella, y de 18 años de
+  monitorización RV que casi ningún otro sistema del catálogo tiene. GJ 436 b ni siquiera
+  está en `atlas_bodies.csv`. Su valor para ATLAS es **cualitativo**: confirma que el
+  campo magnético planetario es hoy medible y no solo asumido, lo que refuerza (sin
+  cuantificar) el bonus por "campo magnético" ya presente en `_R_formula()`
+  (`layers/indices_ecr.py`). Podría citarse como método sugerido en `observability.py`
+  para el caso concreto -- y raro -- de un sistema con largo histórico RV y sin dato de
+  atmósfera/agua, pero no justifica una capa nueva con la evidencia actual (N=1 sistema).
+
+---
+
 ### Spectroscopy & Radial Velocities
 
 **Liang, Y., Winn, J.N., Melchior, P., Lu, S., Tran, Q.H.** (2026)  
